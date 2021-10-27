@@ -1,0 +1,84 @@
+.fixedButton{
+position: fixed;
+bottom: 0px;
+right: 0px; 
+padding: 0px;
+}
+.roundedFixedBtn{
+height: 80px;
+line-height: 80px;  
+width: 80px;  
+font-size: 2em;
+font-weight: bold;
+border-radius: 50%;
+background-color: #4CAF50;
+color: white;
+text-align: center;
+/* vertical-align: middle; */
+cursor: pointer;
+}
+
+/* Dropdown Button */
+/* .fixedButton {
+background-color: #3498DB;
+color: white;
+padding: 16px;
+font-size: 16px;
+border: none;
+cursor: pointer;
+
+position: fixed;
+bottom: 50px;
+right: 50px; 
+padding: 20px;
+} */
+
+/* Dropdown button on hover & focus */
+.fixedButton:hover, .fixedButton:focus {
+background-color: #1b5e21;
+}
+
+button > i {
+pointer-events: none;
+} 
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    /* position: relative;
+    bottom: 0px;
+    right: 0px; 
+    padding: 0; */
+display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+display: none;
+position: fixed;
+bottom: 50px;
+right: 60px; 
+padding: 0px;
+background-color: #f1f1f1;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+border-radius: 5%;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+border-bottom: 1px solid;
+padding-bottom: 1em;
+border-top: 1px solid;
+border-left: 2px solid rgb(76,175,80);
+color: rgb(76,175,80);
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
