@@ -84,6 +84,12 @@ border-radius: 5px;
 /* color: white; */
 }
 
+.header {
+  /* Add shadows to create the "card" effect */
+  background-color: white;
+  /* color: white; */
+  }
+
 /* On mouse-over, add a deeper shadow */
 .card:hover {
 box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -106,4 +112,12 @@ cursor: pointer;
 align-self: flex-end;
 /* width: 100%; */
 /* font-size: 18px; */
+  }
+
+  input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid black;
   }
