@@ -78,7 +78,7 @@ display: block;
 /* Add shadows to create the "card" effect */
 box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 transition: 0.3s;
-width: 20%;
+width: 30%;
 background-color: white;
 border-radius: 5px;
 /* color: white; */
@@ -114,10 +114,28 @@ align-self: flex-end;
 /* font-size: 18px; */
   }
 
-  input[type=text] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 2px solid black;
-  }
+/* input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid black;
+} */
+.big-input{
+  width: 80%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid black;
+}
+
+.inliner {
+  width: 10%;
+  display: inline!important;
+  background: #F9F9F9;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-size: 1.1em;
+  line-height: 1.4;
+  padding: 5px;
+  border: 1px solid rgb(76,175,80);
+}

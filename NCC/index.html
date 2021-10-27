@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.6/js/jsplumb.min.js"></script>
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -33,20 +34,32 @@
         <a class="mr-5 hover:text-gray-900">Third Link</a>
         <a class="mr-5 hover:text-gray-900">Fourth Link</a>
       </nav>
-      <!-- <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Button
-        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
-          <path d="M5 12h14M12 5l7 7-7 7"></path>
-        </svg>
-      </button> -->
     </div>
   </header>
 </div>
 
     <script src="./assets/scripts/script.js"></script>
 
+    <!-- <div class="card">
+        <div class="container">
+          <label>Question</label>
+          <br>
+          <input type="text" class="big-input"/>
+          <hr>
+          <label>Answers</label>
+          <a  onclick="add_answer_field()"><i class="fa fa-plus-circle"></i></a>
+          <br>
+          <div id="answer_fields">
+          <input type="text" class="big-input" id="answer_div_inp_id"/>
+          <input type="text" placeholder="id" class="inliner"/>
+          <input type="text" class="big-input" id="end"/>
+          <input type="text" placeholder="id" class="inliner"/>
+        </div>
+        </div>
+      </div> -->
+
      <div class="dropdown">
         <button onclick="add_block()" class="fixedButton roundedFixedBtn"><i class="fa fa-plus-circle"></i>
-        <!-- <div class="roundedFixedBtn"><i class="fa fa-plus-circle"></i></div> -->
     </button>
         <div id="myDropdown" class="dropdown-content">
           <a  onclick="question_type(this)" value="sq">Simple Question</a>

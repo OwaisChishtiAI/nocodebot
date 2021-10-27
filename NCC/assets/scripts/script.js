@@ -20,6 +20,7 @@ function simple_question_block(){
     var br = document.createElement('br');
     var q_input = document.createElement('input');
     q_input.type = "text";
+    q_input.classList.add('big-input');
     var hr = document.createElement('hr');
     var a_label = document.createElement('label');
     a_label.innerText = "Answers";
@@ -34,8 +35,17 @@ function simple_question_block(){
     answer_div.id = "div" + unique_uuid;
     var answer_div_inp = document.createElement('input');
     answer_div_inp.type = "text";
+    answer_div_inp.classList.add('big-input');
+    var answer_div_id_inp = document.createElement('input');
+    answer_div_id_inp.type = "text";
+    answer_div_id_inp.placeholder = "id";
+    answer_div_id_inp.classList.add('inliner');
+    // answer_div_inp.classList.add('item');
+    // answer_div_inp.id = "answer_div_inp_id";
 
     answer_div.appendChild(answer_div_inp);
+    answer_div.appendChild(document.createTextNode( '\u00A0' ))
+    answer_div.appendChild(answer_div_id_inp);
     container_div.appendChild(q_label);
     container_div.appendChild(br);
     container_div.appendChild(q_input);
@@ -48,6 +58,7 @@ function simple_question_block(){
     card_div.appendChild(container_div);
     document.body.appendChild(document.createElement('br'));
     document.body.appendChild(card_div);
+    // start_plumb();
 }
  
 function generateUUID() { // Public Domain/MIT
@@ -73,8 +84,18 @@ function add_answer_field(element){
     var line_break = document.createElement('br')
     var new_answer_field = document.createElement('input')
     new_answer_field.type = "text";
+    new_answer_field.classList.add('big-input');
+
+    var answer_div_id_inp = document.createElement('input');
+    answer_div_id_inp.type = "text";
+    answer_div_id_inp.placeholder = "id";
+    answer_div_id_inp.classList.add('inliner');
+
     answer_block.appendChild(line_break);
     answer_block.appendChild(new_answer_field);
+    answer_block.appendChild(document.createTextNode( '\u00A0' ))
+    answer_block.appendChild(answer_div_id_inp);
+    // start_plumb();
 }
 
 // Close the dropdown menu if the user clicks outside of it
