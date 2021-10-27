@@ -1,3 +1,6 @@
+var ROW_CHECKER = 0;
+var MAIN_CONTAINER = 'main_container';
+
 function add_block() {
     document.getElementById("myDropdown").classList.toggle("show");
   }
@@ -15,8 +18,15 @@ function simple_question_block(){
     card_div.classList.add('card');
     var container_div = document.createElement('div');
     container_div.classList.add('container');
+    var q_type = document.createElement('label');
+    q_type.innerText = "Simple Question";
+    q_type.classList.add('question-title');
     var q_label = document.createElement('label');
     q_label.innerText = "Question";
+    var q_label_id_inp = document.createElement('input');
+    q_label_id_inp.type = "text";
+    q_label_id_inp.placeholder = "id";
+    q_label_id_inp.classList.add('inliner');
     var br = document.createElement('br');
     var q_input = document.createElement('input');
     q_input.type = "text";
@@ -44,9 +54,14 @@ function simple_question_block(){
     // answer_div_inp.id = "answer_div_inp_id";
 
     answer_div.appendChild(answer_div_inp);
-    answer_div.appendChild(document.createTextNode( '\u00A0' ))
+    answer_div.appendChild(document.createTextNode( '\u00A0' ));
     answer_div.appendChild(answer_div_id_inp);
+    container_div.appendChild(q_type);
+    container_div.appendChild(document.createElement('br'));
+    container_div.appendChild(document.createElement('hr'));
     container_div.appendChild(q_label);
+    container_div.appendChild(document.createTextNode( '\u00A0\u00A0' ));
+    container_div.appendChild(q_label_id_inp);
     container_div.appendChild(br);
     container_div.appendChild(q_input);
     container_div.appendChild(hr);
@@ -56,8 +71,24 @@ function simple_question_block(){
     container_div.appendChild(br2);
     container_div.appendChild(answer_div);
     card_div.appendChild(container_div);
-    document.body.appendChild(document.createElement('br'));
-    document.body.appendChild(card_div);
+    if (ROW_CHECKER %3 == 0){
+        var main_section = document.getElementById('section');
+        var new_container = document.createElement('div');
+        new_container.classList.add('container', 'mx-auto', "flex", "px-5", "py-8", "md:flex-row");
+        new_container.classList.add('flex-col', "items-center");
+        var uuid = generateUUID();
+        new_container.id = "container" + uuid;
+        MAIN_CONTAINER = new_container.id;
+        document.getElementById('section').appendChild(new_container);
+        console.log("MAIN: "+ MAIN_CONTAINER);
+    }
+    var main_container = document.getElementById(MAIN_CONTAINER);
+    main_container.appendChild(document.createTextNode( '\u00A0\u00A0' ));
+    main_container.appendChild(card_div);
+    ROW_CHECKER += 1;
+    // document.getElementById('section').appendChild();
+    // document.body.appendChild(document.createElement('br'));
+    // document.body.appendChild(card_div);
     // start_plumb();
 }
  
