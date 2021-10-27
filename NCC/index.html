@@ -15,31 +15,33 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Document</title>
 </head>
-<body>
+<body style="background-color:whitesmoke">
     <script src="./assets/scripts/script.js"></script>
 
-    <!-- <a class="fixedButton" href onclick="add_block()">
-        <div class="roundedFixedBtn"><i class="fa fa-plus-circle"></i></div>
-     </a> -->
-
-     <!-- <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-        <div id="myDropdown" class="dropdown-content">
-          <a href="#">Link 1</a>
-          <a href="#">Link 2</a>
-          <a href="#">Link 3</a>
+    <div class="card">
+        <div class="container">
+          <label>Question</label>
+          <br>
+          <input type="text"/>
+          <hr>
+          <label>Answers</label>
+          <a  onclick="add_answer_field()"><i class="fa fa-plus-circle"></i></a>
+          <br>
+          <div id="answer_fields">
+          <input type="text"/>
         </div>
-      </div> -->
+        </div>
+      </div>
 
      <div class="dropdown">
-        <button onclick="myFunction()" class="fixedButton roundedFixedBtn"><i class="fa fa-plus-circle"></i>
+        <button onclick="add_block()" class="fixedButton roundedFixedBtn"><i class="fa fa-plus-circle"></i>
         <!-- <div class="roundedFixedBtn"><i class="fa fa-plus-circle"></i></div> -->
     </button>
         <div id="myDropdown" class="dropdown-content">
-          <a href="#">Simple Question</a>
-          <a href="#">Picture MCQ</a>
-          <a href="#">Video MCQ</a>
-          <a href="#">Database Question</a>
+          <a href onclick="question_type(this)" value="sq">Simple Question</a>
+          <a href onclick="question_type(this)" value="pm">Picture MCQ</a>
+          <a href onclick="question_type(this)" value="vm">Video MCQ</a>
+          <a href onclick="question_type(this)" value="dq">Database Question</a>
         </div>
       </div>
      
