@@ -39,16 +39,27 @@
 </div>
 
     <script src="./assets/scripts/script.js"></script>
+    <div class="container">
+      <div class="row">
+        <div class="col text-center">
+          <button class="btn btn-success" onclick="save_changes()">Save Changes</button>
+        </div>
+      </div>
+    </div>
 
     <section id="section">
       <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center" id="main_container">
-    <!-- <div class="row"> -->
-      <!-- <div class="col"> -->
+
     <!-- <div class="card">
         <div class="container">
+          <a  onclick="add_answer_field()"><i class="fa fa-window-close"></i></a>
           <label>Question</label>
           <br>
           <input type="text" class="big-input"/>
+
+          <input type="file" class="custom-file-upload" id="file_upload">
+          <img id="uploadimg" width="100px">
+
           <hr>
           <label>Answers</label>
           <a  onclick="add_answer_field()"><i class="fa fa-plus-circle"></i></a>
@@ -56,24 +67,21 @@
           <div id="answer_fields">
           <input type="text" class="big-input" id="answer_div_inp_id"/>
           <input type="text" placeholder="id" class="inliner"/>
-          <input type="text" class="big-input" id="end"/>
-          <input type="text" placeholder="id" class="inliner"/>
         </div>
         </div>
       </div> -->
+      
 
     </div>
   </section>
-    <!-- </div> -->
-    <!-- </div> -->
 
      <div class="dropdown">
         <button onclick="add_block()" class="fixedButton roundedFixedBtn"><i class="fa fa-plus-circle"></i>
     </button>
         <div id="myDropdown" class="dropdown-content">
           <a  onclick="question_type(this)" value="sq">Simple Question</a>
-          <a href onclick="question_type(this)" value="pm">Picture MCQ</a>
-          <a href onclick="question_type(this)" value="vm">Video MCQ</a>
+          <a  onclick="question_type(this)" value="pm">Picture MCQ</a>
+          <a  onclick="question_type(this)" value="vm">Video MCQ</a>
           <a href onclick="question_type(this)" value="dq">Database Question</a>
         </div>
       </div>

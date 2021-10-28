@@ -1,5 +1,7 @@
 var ROW_CHECKER = 0;
 var MAIN_CONTAINER = 'main_container';
+var CARD_IDS = {};
+var RUNTIME_CARD_ID = "";
 
 function add_block() {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -11,11 +13,28 @@ function question_type(element){
     if (ques_type == "sq"){
         simple_question_block();
     }
+    else if(ques_type == "pm"){
+        simple_question_block(addon='picture');
+    }
+    else if(ques_type == "vm"){
+        simple_question_block(addon='video');
+    }
+    
 }
 
-function simple_question_block(){
+function simple_question_block(addon=null){
+    var card_id = generateUUID();                                                       // UUID CARD DIV
+    var question_type_ref = "sq";
+    CARD_IDS["card"+card_id] = {};
+    RUNTIME_CARD_ID = "card"+card_id;
     var card_div = document.createElement('div');
     card_div.classList.add('card');
+    card_div.id = "card" + card_id;
+    var cancel_card = document.createElement('a');
+    cancel_card.onclick = function() { close_card(this); };
+    cancel_card.id = card_id;
+    var cancel_card_icon = document.createElement('i');
+    cancel_card_icon.classList.add("fa", "fa-window-close");
     var container_div = document.createElement('div');
     container_div.classList.add('container');
     var q_type = document.createElement('label');
@@ -27,35 +46,44 @@ function simple_question_block(){
     q_label_id_inp.type = "text";
     q_label_id_inp.placeholder = "id";
     q_label_id_inp.classList.add('inliner');
+    q_label_id_inp.id = "q_label_id_inp"+card_id;
+    CARD_IDS["card"+card_id]["q_label_id_inp"] = "q_label_id_inp"+card_id;
     var br = document.createElement('br');
     var q_input = document.createElement('input');
     q_input.type = "text";
     q_input.classList.add('big-input');
+    q_input.id = "q_input"+card_id;
+    CARD_IDS["card"+card_id]["q_input"] = "q_input"+card_id;
     var hr = document.createElement('hr');
     var a_label = document.createElement('label');
     a_label.innerText = "Answers";
     var answer_add = document.createElement('a');
+    answer_add.id = "answer_add"+card_id;
     answer_add.onclick = function() { add_answer_field(this); };
-    var unique_uuid = generateUUID();
-    answer_add.id = unique_uuid;
+    // var unique_uuid = generateUUID();                                                       // UUID ANSWER DIV
     var icon = document.createElement('i');
     icon.classList.add("fa", "fa-plus-circle");
     var br2 = document.createElement('br');
     var answer_div = document.createElement('div');
-    answer_div.id = "div" + unique_uuid;
+    answer_div.id = "div" + card_id;
     var answer_div_inp = document.createElement('input');
     answer_div_inp.type = "text";
     answer_div_inp.classList.add('big-input');
+    answer_div_inp.id = "answer_div_inp"+card_id;
+    CARD_IDS["card"+card_id]["answer_div_inp"] = [];
+    CARD_IDS["card"+card_id]["answer_div_inp"].push("answer_div_inp"+card_id);
     var answer_div_id_inp = document.createElement('input');
     answer_div_id_inp.type = "text";
     answer_div_id_inp.placeholder = "id";
     answer_div_id_inp.classList.add('inliner');
-    // answer_div_inp.classList.add('item');
-    // answer_div_inp.id = "answer_div_inp_id";
+    CARD_IDS["card"+card_id]["answer_div_id_inp"] = [];
+    CARD_IDS["card"+card_id]["answer_div_id_inp"].push("answer_div_id_inp"+card_id);
 
     answer_div.appendChild(answer_div_inp);
     answer_div.appendChild(document.createTextNode( '\u00A0' ));
     answer_div.appendChild(answer_div_id_inp);
+    cancel_card.appendChild(cancel_card_icon);
+    container_div.appendChild(cancel_card);
     container_div.appendChild(q_type);
     container_div.appendChild(document.createElement('br'));
     container_div.appendChild(document.createElement('hr'));
@@ -64,6 +92,34 @@ function simple_question_block(){
     container_div.appendChild(q_label_id_inp);
     container_div.appendChild(br);
     container_div.appendChild(q_input);
+    if (addon == "picture"){
+        // var img_sec_uuid = generateUUID();                                                       // UUID IMG FILE
+        var image_input = document.createElement('input');
+        image_input.type = "file";
+        image_input.id = "file_upload" + card_id;
+        image_input.classList.add('custom-file-upload');
+        var image_output = document.createElement('img');
+        image_output.id = "uploading" + card_id;
+        image_output.style.width = "100px";
+        question_type_ref = "pm";
+        container_div.appendChild(image_input);
+        container_div.appendChild(image_output);
+    }
+    else if (addon == "video"){
+        // var video_sec_uuid = generateUUID();                                                       // UUID VIDEO FILE
+        var video_input = document.createElement('input');
+        video_input.type = "file";
+        video_input.id = "file_upload" + card_id;
+        video_input.classList.add('custom-file-upload');
+        var video_output = document.createElement('video');
+        video_output.id = "uploading" + card_id;
+        video_output.style.width = "200px";
+        video_output.setAttribute("controls","controls");
+        question_type_ref = "vm";
+        container_div.appendChild(video_input);
+        container_div.appendChild(video_output);
+    }
+    CARD_IDS["card"+card_id]['question_type'] = question_type_ref;
     container_div.appendChild(hr);
     container_div.appendChild(a_label);
     answer_add.appendChild(icon);
@@ -76,7 +132,7 @@ function simple_question_block(){
         var new_container = document.createElement('div');
         new_container.classList.add('container', 'mx-auto', "flex", "px-5", "py-8", "md:flex-row");
         new_container.classList.add('flex-col', "items-center");
-        var uuid = generateUUID();
+        var uuid = generateUUID();                                                       // UUID CONTAINER
         new_container.id = "container" + uuid;
         MAIN_CONTAINER = new_container.id;
         document.getElementById('section').appendChild(new_container);
@@ -86,10 +142,12 @@ function simple_question_block(){
     main_container.appendChild(document.createTextNode( '\u00A0\u00A0' ));
     main_container.appendChild(card_div);
     ROW_CHECKER += 1;
-    // document.getElementById('section').appendChild();
-    // document.body.appendChild(document.createElement('br'));
-    // document.body.appendChild(card_div);
-    // start_plumb();
+    if(addon == "picture"){
+        document.getElementById("file_upload"+card_id).addEventListener("change", fileuploadfnimage, true);
+    }
+    else if(addon == "video"){
+        document.getElementById("file_upload"+card_id).addEventListener("change", fileuploadfnvideo, true);
+    }
 }
  
 function generateUUID() { // Public Domain/MIT
@@ -110,23 +168,37 @@ function generateUUID() { // Public Domain/MIT
 
 function add_answer_field(element){
     var elem = element.getAttribute('id');
-    console.log("ID: " + elem);
+    elem = elem.split("answer_add")[1];
     var answer_block = document.getElementById("div"+elem);
     var line_break = document.createElement('br')
     var new_answer_field = document.createElement('input')
     new_answer_field.type = "text";
     new_answer_field.classList.add('big-input');
+    var new_id = generateUUID();
+    new_answer_field.id = "answer_div_inp"+new_id;
 
     var answer_div_id_inp = document.createElement('input');
     answer_div_id_inp.type = "text";
     answer_div_id_inp.placeholder = "id";
     answer_div_id_inp.classList.add('inliner');
+    answer_div_id_inp.id = "answer_div_id_inp"+new_id;
+
+    CARD_IDS["card"+elem]["answer_div_inp"].push("answer_div_inp"+new_id);
+    CARD_IDS["card"+elem]["answer_div_id_inp"].push("answer_div_id_inp"+new_id);
 
     answer_block.appendChild(line_break);
     answer_block.appendChild(new_answer_field);
     answer_block.appendChild(document.createTextNode( '\u00A0' ))
     answer_block.appendChild(answer_div_id_inp);
     // start_plumb();
+}
+
+function close_card(element){
+    var elem = element.getAttribute('id');
+    // document.getElementById("card"+elem).style.display = "none";
+    var close_div = document.getElementById("card"+elem)
+    close_div.parentNode.removeChild(close_div);
+    ROW_CHECKER = ROW_CHECKER - 1;
 }
 
 // Close the dropdown menu if the user clicks outside of it
@@ -141,4 +213,40 @@ if (!event.target.matches('.fixedButton')) {
     }
     }
 }
+}
+
+// window.onload=function(){
+//     document.getElementById("file_upload").addEventListener("change", fileuploadfn, true);
+//   }
+function fileuploadfnimage(evt){
+    var image_id = evt.target.id.split("file_upload")[1];
+    var img_sec = document.getElementById("uploading"+image_id);
+    var files = evt.target.files;
+    console.log(img_sec, files);
+    var fr = new FileReader();
+    fr.onload = function () {
+        img_sec.src = fr.result;
+        CARD_IDS["card"+image_id]["image_file"] = fr.result;
+        img_sec.classList.add('img-boundary');
+    }
+    fr.readAsDataURL(files[0]);
+}
+
+function fileuploadfnvideo(evt){
+    var video_id = evt.target.id.split("file_upload")[1];
+    var video_sec = document.getElementById("uploading"+video_id);
+    var files = evt.target.files;
+    console.log(video_sec, files);
+    var fr = new FileReader();
+    fr.onload = function () {
+        video_sec.src = fr.result;
+        CARD_IDS["card"+video_id]["image_file"] = fr.result;
+        video_sec.classList.add('img-boundary');
+    }
+    fr.readAsDataURL(files[0]);
+}
+
+function save_changes(){
+    console.log(CARD_IDS);
+    
 }

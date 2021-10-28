@@ -144,3 +144,15 @@ align-self: flex-end;
   font: bold;
   font-size: medium;
 }
+
+.img-boundary{
+  border: 1px solid black;
+}
+
+.custom-file-upload {
+  content: 'Select some files';
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
