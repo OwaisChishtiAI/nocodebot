@@ -4,90 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./style.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.6/js/jsplumb.min.js"></script>
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <title>Document</title>
+    <title>No Code Bot</title>
 </head>
-<body style="background-color:whitesmoke">
-
-  <div class="header">
-  <header class="text-gray-600 body-font">
-    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-      <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-        </svg>
-        <span class="ml-3 text-xl">No Code Bot</span>
-      </a>
-      <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-        <a class="mr-5 hover:text-gray-900">First Link</a>
-        <a class="mr-5 hover:text-gray-900">Second Link</a>
-        <a class="mr-5 hover:text-gray-900">Third Link</a>
-        <a class="mr-5 hover:text-gray-900">Fourth Link</a>
-      </nav>
-    </div>
-  </header>
-</div>
-
+<body>
     <script src="./assets/scripts/script.js"></script>
     <script src="./assets/scripts/ip_addr.js"></script>
-    <div class="container">
-      <div class="row">
-        <div class="col text-center">
-          <button class="btn btn-success" onclick="save_changes()">Save Changes</button>
+    <section class="text-gray-600 body-font">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-col text-center w-full mb-12">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">No Code Bot Platform</h1>
+            <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Give your Bot a Name.</p>
+          </div>
+          <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+            <div class="relative flex-grow w-full">
+              <label for="full-name" class="leading-7 text-sm text-gray-600">Bot Name</label>
+              <input type="text" id="bot-name" name="bot-name" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+            </div>
+            
+            <!-- <div class="relative flex-grow w-full">
+              <label for="email" class="leading-7 text-sm text-gray-600">Bot ID</label>
+              <input type="email" id="email" name="email" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" disabled>
+            </div> -->
+            <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" onclick="verify_bot_name()">Register</button>
+          </div>
+        <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+            <div class="relative flex-grow w-full">
+                <label style="display: none;" id="name-log"></label>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <section id="section">
-      <div class="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center" id="main_container">
-
-    <!-- <div class="card">
-        <div class="container">
-          <a  onclick="add_answer_field()"><i class="fa fa-window-close"></i></a>
-          <label>Question</label>
-          <br>
-          <input type="text" class="big-input"/>
-
-          <input type="file" class="custom-file-upload" id="file_upload">
-          <img id="uploadimg" width="100px">
-
-          <hr>
-          <label>Answers</label>
-          <a  onclick="add_answer_field()"><i class="fa fa-plus-circle"></i></a>
-          <br>
-          <div id="answer_fields">
-          <input type="text" class="big-input" id="answer_div_inp_id"/>
-          <input type="text" placeholder="id" class="inliner"/>
+        <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+            <div class="relative flex-grow w-full">
+                <button style="display: none;" id="go-to-bot" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" onclick="go_to_bot()">Go To Bot</button>
+            </div>
         </div>
         </div>
-      </div> -->
-      
-
-    </div>
-  </section>
-
-     <div class="dropdown">
-        <button onclick="add_block()" class="fixedButton roundedFixedBtn"><i class="fa fa-plus-circle"></i>
-    </button>
-        <div id="myDropdown" class="dropdown-content">
-          <a  onclick="question_type(this)" value="sq">Simple Question</a>
-          <a  onclick="question_type(this)" value="pm">Picture MCQ</a>
-          <a  onclick="question_type(this)" value="vm">Video MCQ</a>
-          <a href onclick="question_type(this)" value="dq">Database Question</a>
-        </div>
-      </div>
-
-    
-     
+      </section>
 </body>
 </html>

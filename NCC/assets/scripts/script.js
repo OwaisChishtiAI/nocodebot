@@ -217,9 +217,10 @@ if (!event.target.matches('.fixedButton')) {
 }
 }
 
-// window.onload=function(){
-//     document.getElementById("file_upload").addEventListener("change", fileuploadfn, true);
-//   }
+window.onload=function(){
+    document.getElementById("main_heading").innerHTML = sessionStorage.getItem('botname');
+  }
+
 function fileuploadfnimage(evt){
     var image_id = evt.target.id.split("file_upload")[1];
     var img_sec = document.getElementById("uploading"+image_id);
@@ -255,8 +256,6 @@ function save_changes(){
     var formdata = [];
     
     console.log(CARD_IDS_CLONE, CARD_IDS_CLONE.length);
-    var single_ids = ["q_input", "q_label_id_inp"]
-    var list_ids = ["answer_div_id_inp", "answer_div_inp"]
     for (var key of Object.keys(CARD_IDS_CLONE[0])) {
         var formdict = {"question" : "", "question_id" : "", "answers" : [], "answers_id" : [], "question_type" : "", "media" : ""};
         formdict["question"] = document.getElementById(CARD_IDS_CLONE[0][key]["q_input"]).value;
@@ -285,4 +284,55 @@ function save_changes(){
         }
     };
     xhr.send( JSON.stringify(formdata) );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// *************
+// Index Page Codes
+// *************
+function verify_bot_name(){
+    var bot_name = document.getElementById('bot-name').value;
+    bot_name = {"botname" : bot_name};
+    xhr = new XMLHttpRequest();
+    xhr.open( 'POST', ip_addr + 'registerbot/', false );
+    xhr.onreadystatechange = function ( response ) {
+        if (xhr.readyState === 4) {
+        var reponses = xhr.response;
+        reponses = JSON.parse(reponses);
+        console.log('reponse ' + reponses.status, typeof reponses.status);
+        if(reponses.status == 1){
+            var label = document.getElementById('name-log');
+            label.innerText = "Bot name registered successfuly";
+            label.style.color = "green";
+            label.style.display = "block";
+            sessionStorage.setItem("botname" , bot_name['botname']);
+            // window.location = "bot.html";
+        }
+        else{
+            var label = document.getElementById('name-log');
+            label.innerText = "Bot name already exists";
+            label.style.color = "red";
+            label.style.display = "block";
+            document.getElementById("go-to-bot").style.display = "block";
+            sessionStorage.setItem("botname" , bot_name['botname']);
+        }
+        }
+    };
+    xhr.send( JSON.stringify(bot_name) );
+}
+function go_to_bot(){
+    window.location = "bot.html"
 }
