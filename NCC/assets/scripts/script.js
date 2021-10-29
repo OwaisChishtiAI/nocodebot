@@ -76,6 +76,7 @@ function simple_question_block(addon=null){
     answer_div_id_inp.type = "text";
     answer_div_id_inp.placeholder = "id";
     answer_div_id_inp.classList.add('inliner');
+    answer_div_id_inp.id = "answer_div_id_inp"+card_id;
     CARD_IDS["card"+card_id]["answer_div_id_inp"] = [];
     CARD_IDS["card"+card_id]["answer_div_id_inp"].push("answer_div_id_inp"+card_id);
 
@@ -251,24 +252,37 @@ function save_changes(){
     if(CARD_IDS.length == undefined){
         CARD_IDS_CLONE = [CARD_IDS];
     }
+    var formdata = [];
+    
     console.log(CARD_IDS_CLONE, CARD_IDS_CLONE.length);
-    var main_ids = ["answer_div_id_inp", "answer_div_inp", "q_input", "q_label_id_inp"]
+    var single_ids = ["q_input", "q_label_id_inp"]
+    var list_ids = ["answer_div_id_inp", "answer_div_inp"]
     for (var key of Object.keys(CARD_IDS_CLONE[0])) {
-        console.log(CARD_IDS_CLONE[0][key]["q_input"]);
-        console.log(document.getElementById(CARD_IDS_CLONE[0][key]["q_input"]).value);
+        var formdict = {"question" : "", "question_id" : "", "answers" : [], "answers_id" : [], "question_type" : "", "media" : ""};
+        formdict["question"] = document.getElementById(CARD_IDS_CLONE[0][key]["q_input"]).value;
+        formdict["question_id"] = document.getElementById(CARD_IDS_CLONE[0][key]["q_label_id_inp"]).value;
+        for (let i = 0; i < CARD_IDS_CLONE[0][key]["answer_div_inp"].length; i++) {
+            formdict['answers'].push(document.getElementById(CARD_IDS_CLONE[0][key]["answer_div_inp"][i]).value)
+        }
+        for (let i = 0; i < CARD_IDS_CLONE[0][key]["answer_div_id_inp"].length; i++) {
+            formdict['answers_id'].push(document.getElementById(CARD_IDS_CLONE[0][key]["answer_div_id_inp"][i]).value)
+        }
+        formdict["question_type"] = CARD_IDS_CLONE[0][key]["question_type"];
+        if(formdict["question_type"] == "pm" || formdict["question_type"] == "vm"){
+            formdict["media"] = CARD_IDS_CLONE[0][key]["image_file"];
+        }
+        formdata.push(formdict);
     }
-    // for (let index = 0; index < array.length; index++) {
-    //     const element = array[index];
-        
-    // }
-    // xhr = new XMLHttpRequest();
-    // xhr.open( 'POST', ip_addr + 'makebot/', false );
-    // xhr.onreadystatechange = function ( response ) {
-    //     if (xhr.readyState === 4) {
-    //     var reponses = xhr.response;
-    //     reponses = JSON.parse(reponses);
-    //     console.log('reponse ' + reponses.status);
-    //     }
-    // };
-    // xhr.send( JSON.stringify(CARD_IDS) );
+    
+    console.log(formdata);
+    xhr = new XMLHttpRequest();
+    xhr.open( 'POST', ip_addr + 'makebot/', false );
+    xhr.onreadystatechange = function ( response ) {
+        if (xhr.readyState === 4) {
+        var reponses = xhr.response;
+        reponses = JSON.parse(reponses);
+        console.log('reponse ' + reponses.status);
+        }
+    };
+    xhr.send( JSON.stringify(formdata) );
 }

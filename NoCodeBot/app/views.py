@@ -13,7 +13,7 @@ import json
 
 @api_view(["POST"])
 def make_bot(data):
-    bot_data = data.body
+    bot_data = json.loads(data.body)
     print(bot_data)
     response = json.dumps({'status' : 'botmade'})
     return HttpResponse(response, content_type='application/json')
