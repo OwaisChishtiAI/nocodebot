@@ -199,6 +199,7 @@ function close_card(element){
     var close_div = document.getElementById("card"+elem)
     close_div.parentNode.removeChild(close_div);
     ROW_CHECKER = ROW_CHECKER - 1;
+    delete CARD_IDS["card"+elem];
 }
 
 // Close the dropdown menu if the user clicks outside of it
@@ -247,6 +248,27 @@ function fileuploadfnvideo(evt){
 }
 
 function save_changes(){
-    console.log(CARD_IDS);
-    
+    if(CARD_IDS.length == undefined){
+        CARD_IDS_CLONE = [CARD_IDS];
+    }
+    console.log(CARD_IDS_CLONE, CARD_IDS_CLONE.length);
+    var main_ids = ["answer_div_id_inp", "answer_div_inp", "q_input", "q_label_id_inp"]
+    for (var key of Object.keys(CARD_IDS_CLONE[0])) {
+        console.log(CARD_IDS_CLONE[0][key]["q_input"]);
+        console.log(document.getElementById(CARD_IDS_CLONE[0][key]["q_input"]).value);
+    }
+    // for (let index = 0; index < array.length; index++) {
+    //     const element = array[index];
+        
+    // }
+    // xhr = new XMLHttpRequest();
+    // xhr.open( 'POST', ip_addr + 'makebot/', false );
+    // xhr.onreadystatechange = function ( response ) {
+    //     if (xhr.readyState === 4) {
+    //     var reponses = xhr.response;
+    //     reponses = JSON.parse(reponses);
+    //     console.log('reponse ' + reponses.status);
+    //     }
+    // };
+    // xhr.send( JSON.stringify(CARD_IDS) );
 }
