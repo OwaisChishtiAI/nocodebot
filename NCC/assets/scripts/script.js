@@ -268,10 +268,14 @@ function save_changes(){
         }
         formdict["question_type"] = CARD_IDS_CLONE[0][key]["question_type"];
         if(formdict["question_type"] == "pm" || formdict["question_type"] == "vm"){
-            formdict["media"] = CARD_IDS_CLONE[0][key]["image_file"];
+            if(CARD_IDS_CLONE[0][key]["image_file"] != undefined){
+                formdict["media"] = CARD_IDS_CLONE[0][key]["image_file"];
+            }
         }
         formdata.push(formdict);
     }
+    comp_form_data = {"botname" : sessionStorage.getItem('botname'), "details" : formdata}
+    // formdata.push({"botname" : sessionStorage.getItem('botname')});
     
     console.log(formdata);
     xhr = new XMLHttpRequest();
@@ -283,7 +287,7 @@ function save_changes(){
         console.log('reponse ' + reponses.status);
         }
     };
-    xhr.send( JSON.stringify(formdata) );
+    xhr.send( JSON.stringify(comp_form_data) );
 }
 
 
