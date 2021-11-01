@@ -39,7 +39,15 @@ function simple_question_block(addon=null){
     var container_div = document.createElement('div');
     container_div.classList.add('container');
     var q_type = document.createElement('label');
-    q_type.innerText = "Simple Question";
+    if(addon=='picture'){
+        q_type.innerText = "Picture Question";    
+    }
+    else if(addon=='video'){
+        q_type.innerText = "Video Question";    
+    }
+    else{
+        q_type.innerText = "Simple Question";    
+    }
     q_type.classList.add('question-title');
     var q_label = document.createElement('label');
     q_label.innerText = "Question";
@@ -169,8 +177,14 @@ function generateUUID() { // Public Domain/MIT
 }
 
 function add_answer_field(element){
-    var elem = element.getAttribute('id');
-    elem = elem.split("answer_add")[1];
+    if(element instanceof Element){
+        var elem = element.getAttribute('id');
+        elem = elem.split("answer_add")[1];
+    }
+    else{
+        var elem = element;
+    }
+    
     var answer_block = document.getElementById("div"+elem);
     var line_break = document.createElement('br')
     var new_answer_field = document.createElement('input')
@@ -219,7 +233,52 @@ if (!event.target.matches('.fixedButton')) {
 }
 
 window.onload=function(){
-    document.getElementById("main_heading").innerHTML = sessionStorage.getItem('botname');
+    var botname = sessionStorage.getItem('botname');
+    document.getElementById("main_heading").innerHTML = botname;
+    xhr = new XMLHttpRequest();
+    xhr.open( 'POST', ip_addr + 'getbot/', false );
+    xhr.onreadystatechange = function ( response ) {
+        if (xhr.readyState === 4) {
+        var responses = xhr.response;
+        responses = JSON.parse(responses);
+        console.log(responses);
+        for (let index = 0; index < responses.question_type.length; index++) {
+            if(responses.question_type[index] == "sq"){
+                simple_question_block()
+            }
+            else if(responses.question_type[index] == "pm"){
+                simple_question_block(addon='picture')
+            }
+            else if(responses.question_type[index] == "vm"){
+                simple_question_block(addon='video')
+            }
+            var keys = [];
+            for(var key of Object.keys(CARD_IDS)){
+                keys.push(key);
+            }
+            console.log(keys);
+            var this_block_id = keys[keys.length-1];
+            this_block_id = this_block_id.split('card')[1];
+
+            for (let i = 0; i < responses.answers_id[index].length-1; i++) {
+                add_answer_field(this_block_id);
+            }
+            
+            console.log(this_block_id);
+            document.getElementById(CARD_IDS["card"+this_block_id]["q_input"]).value = responses.question[index];
+            document.getElementById(CARD_IDS["card"+this_block_id]["q_label_id_inp"]).value = responses.question_id[index];
+            for (let j = 0; j < CARD_IDS["card"+this_block_id]["answer_div_inp"].length; j++) {
+                document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_inp"][j]).value = responses.answers[index][j];
+                document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_id_inp"][j]).value = responses.answers_id[index][j];
+            }
+            if(CARD_IDS["card"+this_block_id]["question_type"] != "sq"){
+                document.getElementById("uploading"+this_block_id).src = responses.media[index];
+            }
+        } // END of MAIN FOR LOOP
+        console.log(CARD_IDS);
+        }
+    };
+    xhr.send( JSON.stringify({"botname" : botname}) );
   }
 
 function fileuploadfnimage(evt){

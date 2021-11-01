@@ -6,18 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style="background-color:whitesmoke">
+
+  <div class="header">
+  <header class="text-gray-600 body-font">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+      <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        <a href="index.html" ><span class="ml-3 text-xl">No Code Bot</span></a>
+      </a>
+      <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+        <a class="mr-5 hover:text-gray-900">First Link</a>
+        <a class="mr-5 hover:text-gray-900">Second Link</a>
+        <a class="mr-5 hover:text-gray-900">Third Link</a>
+        <a class="mr-5 hover:text-gray-900">Fourth Link</a>
+      </nav>
+    </div>
+  </header>
+</div>
     <style>
-        html, body {
+        /* html, body {
   background: #efefef;      
   height:100%;  
-}
+} */
 #center-text {          
   display: flex;
   flex: 1;
@@ -28,17 +48,23 @@
   
 }
 #chat-circle {
-  position: fixed;
-  bottom: 50px;
-  right: 50px;
-  background: #5A5EB9;
-  width: 80px;
-  height: 80px;  
-  border-radius: 50%;
-  color: white;
-  padding: 28px;
-  cursor: pointer;
-  box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.6), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  height: 80px;
+line-height: 80px;  
+width: 80px;  
+font-size: 2em;
+font-weight: bold;
+border-radius: 50%;
+background-color: #4CAF50;
+color: white;
+text-align: center;
+/* vertical-align: middle; */
+cursor: pointer;
+}
+.fixedButton{
+position: fixed;
+bottom: 0px;
+right: 0px; 
+padding: 0px;
 }
 
 .btn#my-btn {
@@ -239,13 +265,18 @@
     </style>
     <script src="./assets/scripts/ip_addr.js"></script>
     <div id="center-text">
-        <h2>ChatBox UI</h2>
-        <p>Message send and scroll to bottom enabled </p>
+        <h2 id="chatbox-ui"></h2>
+        <script>
+          window.onload=function(){
+            document.getElementById("chatbox-ui").innerHTML = sessionStorage.getItem('botname');
+          }
+        </script>
+        <p>Click Start Chat to begin </p>
       </div> 
     <div id="body"> 
       
-    <div id="chat-circle" class="btn btn-raised">
-            <div id="chat-overlay"></div>
+    <div id="chat-circle" class="fixedButton">
+            <!-- <div id="chat-overlay"></div> -->
                 <i>Start Chat</i>
         </div>
       
@@ -257,7 +288,7 @@
         <div class="chat-box-body">
           <div class="chat-box-overlay">   
           </div>
-          <div class="chat-logs">
+          <div class="chat-logs" id="chat-logs-id">
            
           </div><!--chat-log -->
         </div>
@@ -401,7 +432,7 @@
   })
   
   $("#chat-circle").click(function() {    
-    console.log("opened");
+    document.getElementById('chat-logs-id').innerHTML = "";
     botResponse("");
     $("#chat-circle").toggle('scale');
     $(".chat-box").toggle('scale');

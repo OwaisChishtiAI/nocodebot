@@ -15,6 +15,9 @@ class ChatBot:
 
         self.required = required
 
+    def get_bot_details(self):
+        return self.required
+
     def first_question(self):
         # return self.required['question'][0]
         return {"new_question" : self.required['question'][0], "media" : self.required['media'][0], "new_question_type" : self.required['question_type'][0]}
