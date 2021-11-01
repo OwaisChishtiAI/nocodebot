@@ -331,6 +331,7 @@ function verify_bot_name(){
             label.style.color = "red";
             label.style.display = "block";
             document.getElementById("go-to-bot").style.display = "block";
+            document.getElementById("go-to-chat").style.display = "block";
             sessionStorage.setItem("botname" , bot_name['botname']);
         }
         }
@@ -339,4 +340,7 @@ function verify_bot_name(){
 }
 function go_to_bot(){
     window.location = "bot.html"
+}
+function go_to_chat(){
+    window.location = "chatbox.html"
 }

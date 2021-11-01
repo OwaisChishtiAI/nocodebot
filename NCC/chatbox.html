@@ -193,6 +193,13 @@
   float:left;
   width:15%;
 }
+.chat-msg.user > .msg-media img {
+  width:100px;
+  height:100px;
+  /* border-radius:50%; */
+  float:left;
+  width:50%;
+}
 .chat-msg.self > .msg-avatar img {
   width:45px;
   height:45px;
@@ -230,6 +237,7 @@
     margin-bottom: 70px;
 }
     </style>
+    <script src="./assets/scripts/ip_addr.js"></script>
     <div id="center-text">
         <h2>ChatBox UI</h2>
         <p>Message send and scroll to bottom enabled </p>
@@ -270,6 +278,7 @@
     if(msg.trim() == ''){
       return false;
     }
+    msg = {"new_question" : msg, "media" : "", "new_question_type" : ""};
     generate_message(msg, 'self');
     var buttons = [
         {
@@ -281,22 +290,63 @@
           value: 'new'
         }
       ];
-    setTimeout(function() {      
-      generate_message(msg, 'user');  
-    }, 1000)
+    // setTimeout(function() {      
+    //   generate_message(msg, 'user');  
+    // }, 1000)
+    botResponse(msg.new_question);
     
   })
+
+  function botResponse(ask){
+    var botname = sessionStorage.getItem('botname');
+    // var botname = 'cronus';
+    if (!ask){
+      ask = ""
+    }
+    comp_form_data = {"botname" : botname, "ask" : ask}
+    xhr = new XMLHttpRequest();
+    xhr.open( 'POST', ip_addr + 'commutebot/', false );
+    xhr.onreadystatechange = function ( response ) {
+        if (xhr.readyState === 4) {
+        var reponses = xhr.response;
+        reponses = JSON.parse(reponses);
+        console.log('reponse ' + reponses);
+        generate_message(reponses, 'user');
+        }
+    };
+    xhr.send( JSON.stringify(comp_form_data) );
+  }
   
   function generate_message(msg, type) {
     INDEX++;
     var str="";
     str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg "+type+"\">";
     str += "          <span class=\"msg-avatar\">";
-    str += "            <img src=\"https:\/\/image.crisp.im\/avatar\/operator\/196af8cc-f6ad-4ef7-afd1-c45d5231387c\/240\/?1483361727745\">";
+      if(type == "user"){
+      str += "            <img src=\".\/assets\/img\/bot.jpg\">";
+      }
+      else{
+        str += "            <img src=\".\/assets\/img\/human.png\">";
+      }
     str += "          <\/span>";
     str += "          <div class=\"cm-msg-text\">";
-    str += msg;
+    str += msg.new_question;
     str += "          <\/div>";
+    if(msg.new_question_type == "pm"){
+      str += "          <span class=\"msg-media\">";
+      str += "            <img src=\"";
+      str+=               msg.media;
+      str+=               "\">";
+      str += "          <\/span>";
+    }
+    else if(msg.new_question_type == "vm"){
+      str += "          <span class=\"msg-media\">";
+      str += "            <video controls width=\"200px\" src=\"";
+      str+=               msg.media;
+      str+=               "\">";
+      str += "          <\/span>";
+    }
+
     str += "        <\/div>";
     $(".chat-logs").append(str);
     $("#cm-msg-"+INDEX).hide().fadeIn(300);
@@ -351,6 +401,8 @@
   })
   
   $("#chat-circle").click(function() {    
+    console.log("opened");
+    botResponse("");
     $("#chat-circle").toggle('scale');
     $(".chat-box").toggle('scale');
   })

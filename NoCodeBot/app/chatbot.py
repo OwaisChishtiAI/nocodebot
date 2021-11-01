@@ -16,7 +16,8 @@ class ChatBot:
         self.required = required
 
     def first_question(self):
-        return self.required['question'][0]
+        # return self.required['question'][0]
+        return {"new_question" : self.required['question'][0], "media" : self.required['media'][0], "new_question_type" : self.required['question_type'][0]}
 
     def talk(self, ask):
         i_index, ith_index = None, None
@@ -42,9 +43,11 @@ class ChatBot:
             if question_id != None:
                 new_question = self.required['question'][question_id]
                 print("[INFO] Question Asked ", new_question)
-                return new_question
+                question_type = self.required['question_type'][question_id]
+                media = self.required['media'][question_id]
+                return {"new_question" : new_question, "media" : media, "new_question_type" : question_type}
 
             else:
-                return "No Records Found"
+                return {"new_question" : "Records Not Found", "media" : "", "new_question_type" : ""}
         else:
-            return "No Records Found"
+            return {"new_question" : "Records Not Found", "media" : "", "new_question_type" : ""}
