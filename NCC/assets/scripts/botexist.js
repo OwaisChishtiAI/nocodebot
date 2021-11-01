@@ -339,12 +339,16 @@ function save_changes(){
     
     console.log(formdata);
     xhr = new XMLHttpRequest();
-    xhr.open( 'POST', ip_addr + 'makebot/', false );
+    xhr.open( 'POST', ip_addr + 'updatebot/', false );
     xhr.onreadystatechange = function ( response ) {
         if (xhr.readyState === 4) {
         var reponses = xhr.response;
         reponses = JSON.parse(reponses);
         console.log('reponse ' + reponses.status);
+        var chat = confirm("Changes Saves. Do you want to chat?");
+        if(chat == true){
+            window.location = "chatbox.html";
+        }
         }
     };
     xhr.send( JSON.stringify(comp_form_data) );
