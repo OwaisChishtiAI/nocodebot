@@ -20,7 +20,14 @@ class ChatBot:
 
     def first_question(self):
         # return self.required['question'][0]
-        return {"new_question" : self.required['question'][0], "media" : self.required['media'][0], "new_question_type" : self.required['question_type'][0]}
+        new_question = self.required['question'][0]
+        # if self.required['question_type'][0] == "dq":
+        options = self.required['answers'][0]
+        li = []
+        li.append(new_question)
+        li.append(options)
+        new_question = li
+        return {"new_question" : new_question, "media" : self.required['media'][0], "new_question_type" : self.required['question_type'][0]}
 
     def talk(self, ask):
         i_index, ith_index = None, None
@@ -47,6 +54,12 @@ class ChatBot:
                 new_question = self.required['question'][question_id]
                 print("[INFO] Question Asked ", new_question)
                 question_type = self.required['question_type'][question_id]
+                # if question_type == "dq":
+                options = self.required['answers'][question_id]
+                li = []
+                li.append(new_question)
+                li.append(options)
+                new_question = li
                 media = self.required['media'][question_id]
                 return {"new_question" : new_question, "media" : media, "new_question_type" : question_type}
 
