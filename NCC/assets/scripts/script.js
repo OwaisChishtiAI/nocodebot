@@ -20,6 +20,9 @@ function question_type(element){
     else if(ques_type == "vm"){
         simple_question_block(addon='video');
     }
+    else if(ques_type == "dq"){
+        simple_question_block(addon='database');
+    }
     
 }
 
@@ -39,7 +42,18 @@ function simple_question_block(addon=null){
     var container_div = document.createElement('div');
     container_div.classList.add('container');
     var q_type = document.createElement('label');
-    q_type.innerText = "Simple Question";
+    if(addon=='picture'){
+        q_type.innerText = "Picture Question";    
+    }
+    else if(addon=='video'){
+        q_type.innerText = "Video Question";    
+    }
+    else if(addon=='database'){
+        q_type.innerText = "DataBase Question";    
+    }
+    else{
+        q_type.innerText = "Simple Question";    
+    }
     q_type.classList.add('question-title');
     var q_label = document.createElement('label');
     q_label.innerText = "Question";
@@ -120,6 +134,9 @@ function simple_question_block(addon=null){
         question_type_ref = "vm";
         container_div.appendChild(video_input);
         container_div.appendChild(video_output);
+    }
+    else if (addon == "database"){
+        question_type_ref = "dq";
     }
     CARD_IDS["card"+card_id]['question_type'] = question_type_ref;
     container_div.appendChild(hr);
@@ -286,6 +303,10 @@ function save_changes(){
         var reponses = xhr.response;
         reponses = JSON.parse(reponses);
         console.log('reponse ' + reponses.status);
+        var chat = confirm("Changes Saves. Do you want to chat?");
+        if(chat == true){
+            window.location = "chatbox.html";
+        }
         }
     };
     xhr.send( JSON.stringify(comp_form_data) );
@@ -332,6 +353,8 @@ function verify_bot_name(){
             label.style.display = "block";
             sessionStorage.setItem("botname" , bot_name['botname']);
             EXISTING_BOT = "bot.html";
+            document.getElementById("go-to-bot").style.display = "block";
+            document.getElementById("go-to-chat").style.display = "none";
             // window.location = "bot.html";
         }
         else{

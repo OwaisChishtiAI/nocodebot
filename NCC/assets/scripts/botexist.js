@@ -20,6 +20,9 @@ function question_type(element){
     else if(ques_type == "vm"){
         simple_question_block(addon='video');
     }
+    else if(ques_type == "dq"){
+        simple_question_block(addon='database');
+    }
     
 }
 
@@ -44,6 +47,9 @@ function simple_question_block(addon=null){
     }
     else if(addon=='video'){
         q_type.innerText = "Video Question";    
+    }
+    else if(addon=='database'){
+        q_type.innerText = "DataBase Question";    
     }
     else{
         q_type.innerText = "Simple Question";    
@@ -128,6 +134,9 @@ function simple_question_block(addon=null){
         question_type_ref = "vm";
         container_div.appendChild(video_input);
         container_div.appendChild(video_output);
+    }
+    else if (addon == "database"){
+        question_type_ref = "dq";
     }
     CARD_IDS["card"+card_id]['question_type'] = question_type_ref;
     container_div.appendChild(hr);
@@ -252,6 +261,9 @@ window.onload=function(){
             else if(responses.question_type[index] == "vm"){
                 simple_question_block(addon='video')
             }
+            else if(responses.question_type[index] == "dq"){
+                simple_question_block(addon='database')
+            }
             var keys = [];
             for(var key of Object.keys(CARD_IDS)){
                 keys.push(key);
@@ -271,7 +283,7 @@ window.onload=function(){
                 document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_inp"][j]).value = responses.answers[index][j];
                 document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_id_inp"][j]).value = responses.answers_id[index][j];
             }
-            if(CARD_IDS["card"+this_block_id]["question_type"] != "sq"){
+            if(CARD_IDS["card"+this_block_id]["question_type"] != "sq" && CARD_IDS["card"+this_block_id]["question_type"] != "dq"){
                 document.getElementById("uploading"+this_block_id).src = responses.media[index];
             }
         } // END of MAIN FOR LOOP
