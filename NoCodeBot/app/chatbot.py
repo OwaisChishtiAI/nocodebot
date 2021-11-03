@@ -1,5 +1,6 @@
 from app.models import BotDetails
 import json
+import pandas as pd
 
 class ChatBot:
     def __init__(self, botname):
@@ -25,7 +26,13 @@ class ChatBot:
         options = self.required['answers'][0]
         li = []
         li.append(new_question)
-        li.append(options)
+        if self.required['question_type'][0] == "dq":
+            file = self.required['answers'][0][0]
+            df = pd.read_excel("db_files/"+file)
+            df = list(df[df.columns[0]].values)
+            li.append(df)
+        else:
+            li.append(options)
         new_question = li
         return {"new_question" : new_question, "media" : self.required['media'][0], "new_question_type" : self.required['question_type'][0]}
 
@@ -58,7 +65,13 @@ class ChatBot:
                 options = self.required['answers'][question_id]
                 li = []
                 li.append(new_question)
-                li.append(options)
+                if self.required['question_type'][question_id] == "dq":
+                    file = self.required['answers'][question_id][0]
+                    df = pd.read_excel("db_files/"+file)
+                    df = list(df[df.columns[0]].values)
+                    li.append(df)
+                else:
+                    li.append(options)
                 new_question = li
                 media = self.required['media'][question_id]
                 return {"new_question" : new_question, "media" : media, "new_question_type" : question_type}

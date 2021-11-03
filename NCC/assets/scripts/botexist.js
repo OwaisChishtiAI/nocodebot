@@ -26,6 +26,16 @@ function question_type(element){
     
 }
 
+function select_options(elem){
+    var value = elem.innerHTML;
+    var id = elem.getAttribute('id');
+    console.log(value);
+    console.log(id);
+    id = id.split("option")[1];
+    document.getElementById("answer_div_inp"+id).innerHTML = value;
+    document.getElementById("answer_div_inp"+id).value = value;
+}
+
 function simple_question_block(addon=null){
     var card_id = generateUUID();                                                       // UUID CARD DIV
     var question_type_ref = "sq";
@@ -72,21 +82,65 @@ function simple_question_block(addon=null){
     var hr = document.createElement('hr');
     var a_label = document.createElement('label');
     a_label.innerText = "Answers";
-    var answer_add = document.createElement('a');
-    answer_add.id = "answer_add"+card_id;
-    answer_add.onclick = function() { add_answer_field(this); };
-    // var unique_uuid = generateUUID();                                                       // UUID ANSWER DIV
-    var icon = document.createElement('i');
-    icon.classList.add("fa", "fa-plus-circle");
-    var br2 = document.createElement('br');
+    //
+    if(addon == 'database'){
+        var div1 = document.createElement('div');
+        div1.classList.add('btn-group');
+        var button = document.createElement('button');
+        button.type = "button";
+        button.classList.add("btn", "btn-success", "dropdown-toggle");
+        button.setAttribute("data-toggle", "dropdown");
+        button.setAttribute("aria-haspopup", "true");
+        button.setAttribute("aria-expanded", "false");
+        button.innerHTML = "Select Database";
+        button.id = "answer_div_inp"+card_id;
+        var div2 = document.createElement('div');
+        div2.classList.add("dropdown-menu");
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                console.log("Data Fetched");
+                var results = xhr.response;  
+                results = JSON.parse(results);
+                results = results.files;
+                console.log("RESULTS: ", results);
+                for (let m = 0; m < results.length; m++) {
+                    var option = document.createElement('a');
+                    option.classList.add('dropdown-item');
+                    option.innerHTML = results[m];
+                    option.onclick = function() { select_options(this); };
+                    option.id = "option"+card_id;
+                    div2.appendChild(option);
+                }
+            }
+        }
+        xhr.open('POST', ip_addr + 'db_files/', true);
+        xhr.send(null);
+        
+        div1.appendChild(button);
+        div1.appendChild(div2);
+        CARD_IDS["card"+card_id]["answer_div_inp"] = [];
+        CARD_IDS["card"+card_id]["answer_div_inp"].push("answer_div_inp"+card_id);
+    }
+    else{
+        var answer_add = document.createElement('a');
+        answer_add.id = "answer_add"+card_id;
+        answer_add.onclick = function() { add_answer_field(this); };
+        // var unique_uuid = generateUUID();                                                       // UUID ANSWER DIV
+        var icon = document.createElement('i');
+        icon.classList.add("fa", "fa-plus-circle");
+        var br2 = document.createElement('br');
+        
+        var answer_div_inp = document.createElement('input');
+        answer_div_inp.type = "text";
+        answer_div_inp.classList.add('big-input');
+        answer_div_inp.id = "answer_div_inp"+card_id;
+        CARD_IDS["card"+card_id]["answer_div_inp"] = [];
+        CARD_IDS["card"+card_id]["answer_div_inp"].push("answer_div_inp"+card_id);
+    }
     var answer_div = document.createElement('div');
     answer_div.id = "div" + card_id;
-    var answer_div_inp = document.createElement('input');
-    answer_div_inp.type = "text";
-    answer_div_inp.classList.add('big-input');
-    answer_div_inp.id = "answer_div_inp"+card_id;
-    CARD_IDS["card"+card_id]["answer_div_inp"] = [];
-    CARD_IDS["card"+card_id]["answer_div_inp"].push("answer_div_inp"+card_id);
+    
     var answer_div_id_inp = document.createElement('input');
     answer_div_id_inp.type = "text";
     answer_div_id_inp.placeholder = "id";
@@ -95,9 +149,7 @@ function simple_question_block(addon=null){
     CARD_IDS["card"+card_id]["answer_div_id_inp"] = [];
     CARD_IDS["card"+card_id]["answer_div_id_inp"].push("answer_div_id_inp"+card_id);
 
-    answer_div.appendChild(answer_div_inp);
-    answer_div.appendChild(document.createTextNode( '\u00A0' ));
-    answer_div.appendChild(answer_div_id_inp);
+    
     cancel_card.appendChild(cancel_card_icon);
     container_div.appendChild(cancel_card);
     container_div.appendChild(q_type);
@@ -141,10 +193,26 @@ function simple_question_block(addon=null){
     CARD_IDS["card"+card_id]['question_type'] = question_type_ref;
     container_div.appendChild(hr);
     container_div.appendChild(a_label);
-    answer_add.appendChild(icon);
-    container_div.appendChild(answer_add);
-    container_div.appendChild(br2);
-    container_div.appendChild(answer_div);
+    
+    
+    if(addon == "database"){
+        answer_div.appendChild(div1);
+        answer_div.appendChild(document.createTextNode( '\u00A0' ));
+        answer_div.appendChild(answer_div_id_inp);
+        container_div.appendChild(answer_div);
+    }
+    else{
+        answer_add.appendChild(icon);
+        answer_div.appendChild(answer_div_inp);
+        answer_div.appendChild(document.createTextNode( '\u00A0' ));
+        answer_div.appendChild(answer_div_id_inp);
+        
+        container_div.appendChild(answer_add);
+        container_div.appendChild(answer_div);
+        container_div.appendChild(br2);
+    }
+    
+    
     card_div.appendChild(container_div);
     if (ROW_CHECKER %3 == 0){
         var main_section = document.getElementById('section');
@@ -280,7 +348,13 @@ window.onload=function(){
             document.getElementById(CARD_IDS["card"+this_block_id]["q_input"]).value = responses.question[index];
             document.getElementById(CARD_IDS["card"+this_block_id]["q_label_id_inp"]).value = responses.question_id[index];
             for (let j = 0; j < CARD_IDS["card"+this_block_id]["answer_div_inp"].length; j++) {
-                document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_inp"][j]).value = responses.answers[index][j];
+                if(responses.question_type[index] == "dq"){
+                    document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_inp"][j]).innerHTML = responses.answers[index][j];
+                    document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_inp"][j]).value = responses.answers[index][j];
+                }
+                else{
+                    document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_inp"][j]).value = responses.answers[index][j];
+                }
                 document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_id_inp"][j]).value = responses.answers_id[index][j];
             }
             if(CARD_IDS["card"+this_block_id]["question_type"] != "sq" && CARD_IDS["card"+this_block_id]["question_type"] != "dq"){
