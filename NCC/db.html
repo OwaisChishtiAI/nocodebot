@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script>
+          var initials = sessionStorage.getItem('botname');
+          if(initials == "" || initials == undefined || initials == null){
+            window.location = "index.html"
+          }
+        </script>
+          <meta charset="UTF-8">
+          <meta http-equiv="X-UA-Compatible" content="IE=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link href="./style.css" rel="stylesheet">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+          <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.6/js/jsplumb.min.js"></script>
+      
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+          <title>No Code Bot</title>
+      </head>
+<body style="background-color:whitesmoke">
+    <div class="header">
+        <header class="text-gray-600 body-font">
+          <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+            <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+              <a href="index.html" ><span class="ml-3 text-xl">No Code Bot</span></a>
+            </a>
+            <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+              <a class="mr-5 hover:text-gray-900">First Link</a>
+              <a class="mr-5 hover:text-gray-900">Second Link</a>
+              <a class="mr-5 hover:text-gray-900">Third Link</a>
+              <a class="mr-5 hover:text-gray-900">Fourth Link</a>
+            </nav>
+          </div>
+        </header>
+      </div>
+      
+          <script src="./assets/scripts/dbscript.js"></script>
+          <script src="./assets/scripts/ip_addr.js"></script>
+
+          <section class="text-gray-600 body-font">
+            <div class="container px-5 py-24 mx-auto">
+              <div class="flex flex-col text-center w-full mb-12">
+          <div class="container">
+            <h2>Basic Table</h2>
+            <p>The .table class adds basic styling (light padding and only horizontal dividers) to a table:</p>            
+            <table class="table" id="files_table">
+              <tbody>
+                <tr>
+                    <!-- <td><b>Database Name</b></td> -->
+                    <td><b>Database File</b></td>
+                    <td><b>Actions</b></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+          </div>
+          </section>
+          <button class="fixedButton roundedFixedBtn" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus-circle"></i>
+
+            <div class="container">
+                <h2>Modal Example</h2>
+                <!-- Trigger the modal with a button -->
+                <button type="button" style="display: none;" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+              
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                  <div class="modal-dialog">
+                  
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Database</h4>
+                      </div>
+                      <div class="modal-body">
+                        <form onsubmit="return false">
+                            <!-- <label>Database Name</label>
+                            <input type="text" name="db_name" class="form-control" id="db_name" placeholder="Countries" required> -->
+                            <label>Database File</label>
+                            <input type="file" name="db_file" class="form-control" id="db_file" required>
+                            <br>
+                            <button class="btn btn-primary" onclick="add_db_file()">Submit File</button>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+                
+              </div>
+    
+
+            
+</body>
+
+</html>
