@@ -71,7 +71,7 @@ window.onload=function(){
 
             var i = 1;
             var Table = document.getElementById("files_table");
-            Table.innerHTML = "<tr><td>#</td><td>Database File</td><td>Actions</td></tr>";
+            Table.innerHTML = "<tr><td><b>#</b></td><td><b>Database File</b></td><td><b>Actions</b></td></tr>";
             // var table_cols = ["TimeStamp", "Agent Name", "Order ID", "Actions"]
             // for(var a = 0; a < 4; a++){
 
