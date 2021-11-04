@@ -8,7 +8,7 @@
   <title>Document</title>
 </head>
 <body >
-  <script src="./assets/scripts/ip_addr.js"></script>
+    <script src="./assets/scripts/ip_addr.js"></script>
   <div class="header">
     <header class="text-gray-600 body-font">
       <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -41,11 +41,11 @@
             <label for="hero-field" class="leading-7 text-sm text-gray-600">Password</label>
             <input type="password" id="hero-field2" name="hero-field2" class="w-full bg-gray-100 rounded border bg-opacity-50 border-gray-300 focus:ring-2 focus:ring-indigo-200 focus:bg-transparent focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
           </div>
-          <button onclick="login()" class="inline-flex text-white bg-green-600 border-0 py-2 px-6 focus:outline-none hover:bg-green-400 rounded text-lg">Login</button>
+          <button onclick="login()" class="inline-flex text-white bg-green-600 border-0 py-2 px-6 focus:outline-none hover:bg-green-400 rounded text-lg">Register</button>
         </div>
         <script>
-          function go_to_register(){
-            window.location = "signup.html";
+            function go_to_login(){
+            window.location = "index.html";
           }
           function login(){
             var username = document.getElementById('hero-field').value;
@@ -56,25 +56,21 @@
             }
             comp_form_data = {'username' : username, 'password' : password}
             xhr = new XMLHttpRequest();
-            xhr.open( 'POST', ip_addr + 'login/', false );
+            xhr.open( 'POST', ip_addr + 'register/', false );
             xhr.onreadystatechange = function ( response ) {
                 if (xhr.readyState === 4) {
                 var reponses = xhr.response;
                 reponses = JSON.parse(reponses);
                 console.log('reponse ' + reponses);
-                if(reponses.login == "success"){
-                    sessionStorage.setItem('username', username);
-                    window.location = "botadd.html";
-                }
-                else{
-                  alert('username or password is incorrect');
+                if(reponses.register == "success"){
+                    window.location = "index.html";
                 }
                 }
             };
             xhr.send( JSON.stringify(comp_form_data) );
           }
         </script>
-        <p class="text-sm mt-2 text-gray-500 mb-8 w-full">Don't Have Account? <a href="#" onclick="go_to_register()"><b>Register Here</b></a></p>
+        <p class="text-sm mt-2 text-gray-500 mb-8 w-full">Already Have Account? <a href="#" onclick="go_to_login()"><b>Login Here</b></a></p>
         <div class="flex lg:flex-row md:flex-col">
           <!-- <button class="bg-gray-100 inline-flex py-3 px-5 rounded-lg items-center hover:bg-gray-200 focus:outline-none">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 512 512">

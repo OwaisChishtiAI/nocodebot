@@ -406,7 +406,7 @@ function verify_bot_name(){
         label.style.display = "block";
         return 0;
     }
-    bot_name = {"botname" : bot_name};
+    bot_name = {"botname" : bot_name, "username": sessionStorage.getItem('username')};
     xhr = new XMLHttpRequest();
     xhr.open( 'POST', ip_addr + 'registerbot/', false );
     xhr.onreadystatechange = function ( response ) {
@@ -422,6 +422,17 @@ function verify_bot_name(){
             sessionStorage.setItem("botname" , bot_name['botname']);
             EXISTING_BOT = "bot.html";
             document.getElementById("go-to-bot").style.display = "block";
+            document.getElementById("go-to-chat").style.display = "none";
+            // window.location = "bot.html";
+        }
+        else if(reponses.status == 2){
+            var label = document.getElementById('name-log');
+            label.innerText = "Bot name is registered with some other user, try another name.";
+            label.style.color = "red";
+            label.style.display = "block";
+            sessionStorage.setItem("botname" , bot_name['botname']);
+            EXISTING_BOT = "botadd.html";
+            document.getElementById("go-to-bot").style.display = "none";
             document.getElementById("go-to-chat").style.display = "none";
             // window.location = "bot.html";
         }

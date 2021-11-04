@@ -529,23 +529,28 @@ padding: 0px;
     
     if(msg.new_question_type == "dq"){
       str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg "+type+"\">";
-      // for(var l = 0 ; l < msg.answers.length ; l++){
-      //   if(msg.answers[l]){
-        str += "          <div class=\"cm-msg-text\">";
-        // str += "            <button onclick=\"option_choose(this)\">";
-        //   str+=               msg.answers[l];
-        //   str+=               "<\/button>";
-        str+="              <form autocomplete=\"off\" onsubmit=\"return false\">";
-        str+="              <input id=\"myInput\" type=\"text\" name=\"myCountry\" placeholder=\"Select Option\">";
-        str+="              <button onclick=\"search_click()\"><i class=\"fa fa-paper-plane\" aria-hidden=\"true\"></i></button>"
-        str+="              <\/form>";
-        str += "            <\/div>";
-
-      //   }
-      // }
       
-      str += "        <\/div>";
-      
+        
+        if(msg.answers.length < 5){
+          for(var l = 0 ; l < msg.answers.length ; l++){
+            if(msg.answers[l]){
+              str += "          <div class=\"cm-msg-text\">";
+            str += "            <button onclick=\"option_choose(this)\">";
+              str+=               msg.answers[l];
+              str+=               "<\/button>";
+              str += "        <\/div>";
+            }
+          }
+        }
+        else{
+          str += "          <div class=\"cm-msg-text\">";
+          str+="              <form autocomplete=\"off\" onsubmit=\"return false\">";
+          str+="              <input id=\"myInput\" type=\"text\" name=\"myCountry\" placeholder=\"Select Option\">";
+          str+="              <button onclick=\"search_click()\"><i class=\"fa fa-paper-plane\" aria-hidden=\"true\"></i></button>"
+          str+="              <\/form>";
+          str += "            <\/div>"; 
+          str += "        <\/div>";
+          }
     }
     
     if(msg.new_question_type == "sq"){
@@ -568,7 +573,9 @@ padding: 0px;
      $("#chat-input").val(''); 
     }    
     if(msg.new_question_type == "dq"){
+      if(msg.answers.length > 5){
       autocomplete(document.getElementById("myInput"), msg.answers)
+      }
     }
     $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight}, 1000);    
   }  

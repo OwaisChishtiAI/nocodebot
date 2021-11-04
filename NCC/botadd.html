@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>No Code Bot</title>
+</head>
+<body>
+    <script src="./assets/scripts/script.js"></script>
+    <script src="./assets/scripts/ip_addr.js"></script>
+    
+    <section class="text-gray-600 body-font">
+      <!-- <div class="flex flex-col text-right w-1/2 mb-6"> -->
+      <!-- </div> -->
+      
+      <div class="container px-5 py-24 mx-auto">
+        <div class="flex flex-col text-center w-full mb-12">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">No Code Bot Platform</h1>
+            <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Give your Bot a Name.</p>
+          </div>
+          <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+            <label for="bots">Bot:</label>
+
+          <select name="bots" id="bots" onchange="choose_saved_bot(this)">
+            <script>
+              function choose_saved_bot(elem){
+                var selectBox = document.getElementById("bots");
+                var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+                console.log(selectedValue);
+                if(selectedValue != "empty"){
+                  var bot_field = document.getElementById('bot-name');
+                  bot_field.value = selectedValue;
+                  document.getElementById('bot-register').click();
+                }
+              }
+
+              window.onload=function(){
+                xhr = new XMLHttpRequest();
+                comp_form_data = {'username' : sessionStorage.getItem('username')};
+                xhr.open( 'POST', ip_addr + 'botnames/', false );
+                xhr.onreadystatechange = function ( response ) {
+                    if (xhr.readyState === 4) {
+                    var reponses = xhr.response;
+                    reponses = JSON.parse(reponses);
+                    var menu = document.getElementById('bots');
+                    let opt = document.createElement('option');
+                    opt.value = "empty";
+                    opt.innerHTML = "Select";
+                    menu.appendChild(opt);
+                    for(let i = 0 ; i < reponses.bot_names.length ; i++){
+                      let opt = document.createElement('option');
+                      opt.value = reponses.bot_names[i];
+                      opt.innerHTML = reponses.bot_names[i];
+                      // opt.onclick = function(){choose_saved_bot(this)};
+                      menu.appendChild(opt);
+                    }
+                    }
+                };
+                xhr.send( JSON.stringify(comp_form_data) );
+              }
+            </script>
+          </select>
+            <div class="relative flex-grow w-full">
+              <label for="full-name" class="leading-7 text-sm text-gray-600">Bot Name</label>
+              <input type="text" id="bot-name" name="bot-name" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+            </div>
+            
+            <!-- <div class="relative flex-grow w-full">
+              <label for="email" class="leading-7 text-sm text-gray-600">Bot ID</label>
+              <input type="email" id="email" name="email" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-transparent focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" disabled>
+            </div> -->
+            <button id="bot-register" class="text-white bg-green-600 border-0 py-2 px-8 focus:outline-none hover:bg-green-400 rounded text-lg" onclick="verify_bot_name()">Register</button>
+          </div>
+        <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+            <div class="relative flex-grow w-full">
+                <label style="display: none;" id="name-log"></label>
+            </div>
+        </div>
+        <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+            <div class="relative flex-grow w-full">
+                <button style="display: none;" id="go-to-bot" class="text-white bg-green-600 border-0 py-2 px-8 focus:outline-none hover:bg-green-400 rounded text-lg" onclick="go_to_bot()">Go To Bot</button>
+              </div>
+            </div>
+            <hr>
+            <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
+              <div class="relative flex-grow w-full">
+            <button style="display: none;" id="go-to-chat" class="text-white bg-green-600 border-0 py-2 px-8 focus:outline-none hover:bg-green-400 rounded text-lg" onclick="go_to_chat()">Start Chat</button>
+          </div>
+      </div>
+        </div>
+      </section>
+</body>
+</html>
