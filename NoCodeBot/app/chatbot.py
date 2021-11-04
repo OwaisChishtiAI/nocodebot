@@ -31,14 +31,17 @@ class ChatBot:
             df = pd.read_excel("db_files/"+file)
             df = list(df[df.columns[0]].values)
             li.append(df)
+            db_question = file
         else:
             li.append(options)
+            db_question = ""
         new_question = li
-        return {"new_question" : new_question, "media" : self.required['media'][0], "new_question_type" : self.required['question_type'][0]}
+        return {"new_question" : new_question, "media" : self.required['media'][0], "new_question_type" : self.required['question_type'][0],\
+            "db_question": db_question}
 
     def talk(self, ask):
         i_index, ith_index = None, None
-        print(self.required['answers'])
+        print("[INFO] Answer Asked: ", ask)
         for i in range(len(self.required['answers'])):
             try:
                 answer_id = self.required['answers'][i].index(ask)
@@ -70,11 +73,13 @@ class ChatBot:
                     df = pd.read_excel("db_files/"+file)
                     df = list(df[df.columns[0]].values)
                     li.append(df)
+                    db_question = file
                 else:
                     li.append(options)
+                    db_question = ""
                 new_question = li
                 media = self.required['media'][question_id]
-                return {"new_question" : new_question, "media" : media, "new_question_type" : question_type}
+                return {"new_question" : new_question, "media" : media, "new_question_type" : question_type, "db_question" : db_question}
 
             else:
                 return {"new_question" : "Records Not Found", "media" : "", "new_question_type" : ""}
