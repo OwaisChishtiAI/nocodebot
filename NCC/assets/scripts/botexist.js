@@ -135,6 +135,34 @@ function simple_question_block(addon=null){
         answer_div_inp.type = "text";
         answer_div_inp.classList.add('big-input');
         answer_div_inp.id = "answer_div_inp"+card_id;
+        if(addon == "picture"){
+            var image_input_answer = document.createElement('input');
+            image_input_answer.type = "file";
+            image_input_answer.id = "file_upload_answer" + card_id;
+            image_input_answer.classList.add('custom-file-upload');
+            var image_output_answer = document.createElement('img');
+            image_output_answer.id = "uploading_answer" + card_id;
+            image_output_answer.style.width = "100px";
+            question_type_ref = "pm";
+            CARD_IDS["card"+card_id]["answer_div_inp_image"] = [];
+            CARD_IDS["card"+card_id]["image_files"] = [];
+            CARD_IDS["card"+card_id]["answer_div_inp_image"].push("answer_div_inp_image"+card_id);    
+        }
+        else if(addon == "video"){
+            var image_input_answer = document.createElement('input');
+            image_input_answer.type = "file";
+            image_input_answer.id = "file_upload_answer" + card_id;
+            image_input_answer.classList.add('custom-file-upload');
+            var image_output_answer = document.createElement('video');
+            image_output_answer.id = "uploading_answer" + card_id;
+            image_output_answer.style.width = "200px";
+            image_output_answer.setAttribute("controls","controls");
+            question_type_ref = "vm";
+            CARD_IDS["card"+card_id]["answer_div_inp_image"] = [];
+            CARD_IDS["card"+card_id]["image_files"] = [];
+            CARD_IDS["card"+card_id]["answer_div_inp_image"].push("answer_div_inp_image"+card_id);    
+        }
+
         CARD_IDS["card"+card_id]["answer_div_inp"] = [];
         CARD_IDS["card"+card_id]["answer_div_inp"].push("answer_div_inp"+card_id);
     }
@@ -206,6 +234,14 @@ function simple_question_block(addon=null){
         answer_div.appendChild(answer_div_inp);
         answer_div.appendChild(document.createTextNode( '\u00A0' ));
         answer_div.appendChild(answer_div_id_inp);
+        if(addon == "picture"){
+            answer_div.appendChild(image_input_answer);
+            answer_div.appendChild(image_output_answer);
+        }
+        else if(addon == "video"){
+            answer_div.appendChild(image_input_answer);
+            answer_div.appendChild(image_output_answer);
+        }
         
         container_div.appendChild(answer_add);
         container_div.appendChild(answer_div);
@@ -231,9 +267,11 @@ function simple_question_block(addon=null){
     ROW_CHECKER += 1;
     if(addon == "picture"){
         document.getElementById("file_upload"+card_id).addEventListener("change", fileuploadfnimage, true);
+        document.getElementById("file_upload_answer"+card_id).addEventListener("change", fileuploadfnanswerimage, true);
     }
     else if(addon == "video"){
         document.getElementById("file_upload"+card_id).addEventListener("change", fileuploadfnvideo, true);
+        document.getElementById("file_upload_answer"+card_id).addEventListener("change", fileuploadfnanswervideo, true);
     }
 }
  
@@ -261,7 +299,6 @@ function add_answer_field(element){
     else{
         var elem = element;
     }
-    
     var answer_block = document.getElementById("div"+elem);
     var line_break = document.createElement('br')
     var new_answer_field = document.createElement('input')
@@ -275,6 +312,7 @@ function add_answer_field(element){
     answer_div_id_inp.placeholder = "id";
     answer_div_id_inp.classList.add('inliner');
     answer_div_id_inp.id = "answer_div_id_inp"+new_id;
+    
 
     CARD_IDS["card"+elem]["answer_div_inp"].push("answer_div_inp"+new_id);
     CARD_IDS["card"+elem]["answer_div_id_inp"].push("answer_div_id_inp"+new_id);
@@ -283,6 +321,37 @@ function add_answer_field(element){
     answer_block.appendChild(new_answer_field);
     answer_block.appendChild(document.createTextNode( '\u00A0' ))
     answer_block.appendChild(answer_div_id_inp);
+    if(answer_block.contains(document.getElementById('uploading_answer'+elem))){
+        if(document.getElementById('uploading_answer'+elem).nodeName == "IMG"){
+            var image_input_answer = document.createElement('input');
+            image_input_answer.type = "file";
+            image_input_answer.id = "file_upload_answer" + new_id;
+            image_input_answer.classList.add('custom-file-upload');
+            var image_output_answer = document.createElement('img');
+            image_output_answer.id = "uploading_answer" + new_id;
+            image_output_answer.style.width = "100px";
+            question_type_ref = "pm";
+            CARD_IDS["card"+elem]["answer_div_inp_image"].push("answer_div_inp_image"+new_id);
+            answer_block.appendChild(image_input_answer);
+            answer_block.appendChild(image_output_answer);
+            document.getElementById("file_upload_answer"+new_id).addEventListener("change", fileuploadfnanswerimage, true);
+        }
+        else if(document.getElementById('uploading_answer'+elem).nodeName == "VIDEO"){
+            var image_input_answer = document.createElement('input');
+            image_input_answer.type = "file";
+            image_input_answer.id = "file_upload_answer" + new_id;
+            image_input_answer.classList.add('custom-file-upload');
+            var image_output_answer = document.createElement('video');
+            image_output_answer.id = "uploading_answer" + new_id;
+            image_output_answer.style.width = "200px";
+            image_output_answer.setAttribute("controls","controls");
+            question_type_ref = "vm";
+            CARD_IDS["card"+elem]["answer_div_inp_image"].push("answer_div_inp_image"+new_id);
+            answer_block.appendChild(image_input_answer);
+            answer_block.appendChild(image_output_answer);
+            document.getElementById("file_upload_answer"+new_id).addEventListener("change", fileuploadfnanswerimage, true);
+        }
+    }
     // start_plumb();
 }
 
@@ -344,7 +413,7 @@ window.onload=function(){
                 add_answer_field(this_block_id);
             }
             
-            console.log(this_block_id);
+            console.log(CARD_IDS);
             document.getElementById(CARD_IDS["card"+this_block_id]["q_input"]).value = responses.question[index];
             document.getElementById(CARD_IDS["card"+this_block_id]["q_label_id_inp"]).value = responses.question_id[index];
             for (let j = 0; j < CARD_IDS["card"+this_block_id]["answer_div_inp"].length; j++) {
@@ -356,10 +425,19 @@ window.onload=function(){
                     document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_inp"][j]).value = responses.answers[index][j];
                 }
                 document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_id_inp"][j]).value = responses.answers_id[index][j];
+                
             }
             if(CARD_IDS["card"+this_block_id]["question_type"] != "sq" && CARD_IDS["card"+this_block_id]["question_type"] != "dq"){
-                document.getElementById("uploading"+this_block_id).src = responses.media[index];
+                document.getElementById("uploading"+this_block_id).src = responses.qmedia[index];
             }
+            if(CARD_IDS["card"+this_block_id]["question_type"] != "sq" && CARD_IDS["card"+this_block_id]["question_type"] != "dq"){
+                for (let j = 0; j < CARD_IDS["card"+this_block_id]["answer_div_inp_image"].length; j++) {
+                    let images_id = CARD_IDS["card"+this_block_id]["answer_div_inp_image"][j].split('answer_div_inp_image')[1];
+                    console.log(images_id);
+                    document.getElementById("uploading_answer"+images_id).src = responses.amedia[index][j];
+                }
+            }
+            
         } // END of MAIN FOR LOOP
         console.log(CARD_IDS);
         }
@@ -381,6 +459,21 @@ function fileuploadfnimage(evt){
     fr.readAsDataURL(files[0]);
 }
 
+function fileuploadfnanswerimage(evt){
+    var image_id = evt.target.id.split("file_upload_answer")[1];
+    var img_sec = document.getElementById("uploading_answer"+image_id);
+    var files = evt.target.files;
+    console.log(img_sec, files);
+    var fr = new FileReader();
+    fr.onload = function () {
+        img_sec.src = fr.result;
+        var parent_id = img_sec.parentNode.id.split('div')[1];
+        CARD_IDS["card"+parent_id]["image_files"].push(fr.result);
+        img_sec.classList.add('img-boundary');
+    }
+    fr.readAsDataURL(files[0]);
+}
+
 function fileuploadfnvideo(evt){
     var video_id = evt.target.id.split("file_upload")[1];
     var video_sec = document.getElementById("uploading"+video_id);
@@ -394,6 +487,20 @@ function fileuploadfnvideo(evt){
     }
     fr.readAsDataURL(files[0]);
 }
+function fileuploadfnanswervideo(evt){
+    var video_id = evt.target.id.split("file_upload_answer")[1];
+    var video_sec = document.getElementById("uploading_answer"+video_id);
+    var files = evt.target.files;
+    console.log(video_sec, files);
+    var fr = new FileReader();
+    fr.onload = function () {
+        video_sec.src = fr.result;
+        var parent_id = video_sec.parentNode.id.split('div')[1];
+        CARD_IDS["card"+parent_id]["image_files"].push(fr.result);
+        video_sec.classList.add('img-boundary');
+    }
+    fr.readAsDataURL(files[0]);
+}
 
 function save_changes(){
     if(CARD_IDS.length == undefined){
@@ -403,7 +510,7 @@ function save_changes(){
     
     console.log(CARD_IDS_CLONE, CARD_IDS_CLONE.length);
     for (var key of Object.keys(CARD_IDS_CLONE[0])) {
-        var formdict = {"question" : "", "question_id" : "", "answers" : [], "answers_id" : [], "question_type" : "", "media" : ""};
+        var formdict = {"question" : "", "question_id" : "", "answers" : [], "answers_id" : [], "question_type" : "", "qmedia" : "", "amedia": []};
         formdict["question"] = document.getElementById(CARD_IDS_CLONE[0][key]["q_input"]).value;
         formdict["question_id"] = document.getElementById(CARD_IDS_CLONE[0][key]["q_label_id_inp"]).value;
         for (let i = 0; i < CARD_IDS_CLONE[0][key]["answer_div_inp"].length; i++) {
@@ -415,7 +522,18 @@ function save_changes(){
         formdict["question_type"] = CARD_IDS_CLONE[0][key]["question_type"];
         if(formdict["question_type"] == "pm" || formdict["question_type"] == "vm"){
             if(CARD_IDS_CLONE[0][key]["image_file"] != undefined){
-                formdict["media"] = CARD_IDS_CLONE[0][key]["image_file"];
+                formdict["qmedia"] = CARD_IDS_CLONE[0][key]["image_file"];
+            }
+        }
+        if(formdict["question_type"] == "pm" || formdict["question_type"] == "vm"){
+            for (let i = 0; i < CARD_IDS_CLONE[0][key]["answer_div_inp"].length; i++) {
+                // try{
+                if(CARD_IDS_CLONE[0][key]["image_files"][i] != undefined){
+                    formdict["amedia"].push(CARD_IDS_CLONE[0][key]["image_files"][i]);//
+                }
+                else{
+                    formdict["amedia"].push("");
+                }
             }
         }
         formdata.push(formdict);

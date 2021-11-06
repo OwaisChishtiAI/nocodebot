@@ -9,7 +9,7 @@ class ChatBot:
         if bot_details:
             bot_details = bot_details.values()[0]
 
-        required = {"question" : None, "question_id" : None, "answers" : None, "answers_id" : None, "question_type" : None, "media" : None}
+        required = {"question" : None, "question_id" : None, "answers" : None, "answers_id" : None, "question_type" : None, "qmedia" : None, "amedia": None}
         # print(bot_details, bot_details['question'], type(bot_details['question']))
         for each in required.keys():
             required[each] = json.loads(bot_details[each].replace("'", '"'))
