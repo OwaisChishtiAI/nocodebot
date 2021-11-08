@@ -16,9 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url
+# from NoCodeBot.app.views import verify_bot_name
 from app import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^makebot/', views.make_bot)
+    url(r'^makebot/', views.make_bot),
+    url(r'^registerbot/', views.verify_bot_name),
+    url(r'^commutebot/', views.communicate_bot),
+    url(r'^getbot/', views.get_bot),
+    url(r'^updatebot/', views.update_bot),
+    url(r'^getfiles/', views.get_db_file),
+    url(r'^db_files/', views.db_files),
+    url(r'^del_db_files/', views.delete_files),
+    url(r'^register/', views.register),
+    url(r'^login/', views.login),
+    url(r'^botnames/', views.get_bot_names),
+    url(r'^getchatlogs/', views.get_chat_logs),
 ]

@@ -80,8 +80,16 @@ WSGI_APPLICATION = 'NoCodeBot.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'ncc',
+
+        'USER': 'postgres',
+
+        'PASSWORD': '1234',
+
+        'HOST': 'localhost',
+
+        'PORT': '5433',
     }
 }
 
@@ -129,3 +137,4 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True  
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10242880000
