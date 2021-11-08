@@ -498,13 +498,19 @@ padding: 0px;
     if(msg.new_question_type == "pm"){
       str += "          <span class=\"msg-media\">";
       str += "            <img width=\"200px\" src=\"";
-      str+=               msg.media;
+      str+=               msg.qmedia;
       str+=               "\">";
       str += "          <\/span>";
+      str +="            <br>";
       str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg "+type+"\">";
       for(var l = 0 ; l < msg.answers.length ; l++){
         if(msg.answers[l]){
         str += "          <div class=\"cm-msg-text\">";
+        str += "          <span class=\"msg-media\">";
+        str += "            <img width=\"200px\" src=\"";
+        str+=               msg.amedia[l];
+        str+=               "\">";
+        str += "          <\/span>";
         str += "            <button onclick=\"option_choose(this)\">";
           str+=               msg.answers[l];
           str+=               "<\/button>";
@@ -517,13 +523,19 @@ padding: 0px;
     else if(msg.new_question_type == "vm"){
       str += "          <span >";
       str += "            <video controls width=\"200px\" src=\"";
-      str+=               msg.media;
+      str+=               msg.qmedia;
       str+=               "\">";
       str += "          <\/span>";
+      str +="            <br>";
       str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg "+type+"\">";
       for(var l = 0 ; l < msg.answers.length ; l++){
         if(msg.answers[l]){
         str += "          <div class=\"cm-msg-text\">";
+        str += "          <span >";
+        str += "            <video controls width=\"200px\" src=\"";
+        str+=               msg.amedia[l];
+        str+=               "\">";
+        str += "          <\/span>";
         str += "            <button onclick=\"option_choose(this)\">";
           str+=               msg.answers[l];
           str+=               "<\/button>";
