@@ -616,6 +616,7 @@ function verify_bot_name(){
             label.style.display = "block";
             document.getElementById("go-to-bot").style.display = "block";
             document.getElementById("go-to-chat").style.display = "block";
+            document.getElementById("go-to-user-chat").style.display = "block";
             sessionStorage.setItem("botname" , bot_name['botname']);
             EXISTING_BOT = "botexist.html";
         }
@@ -630,4 +631,8 @@ function go_to_bot(){
 }
 function go_to_chat(){
     window.location = "chatbox.html";
+}
+
+function go_to_user_chat(){
+    window.location = "user_data.html";
 }

@@ -316,6 +316,7 @@ padding: 0px;
     <script>
       var DB_QUESTION = null;
       var FQ = false;
+      var SESSION_GLOBAL_ID = null;
 
       function generateUUID() { // Public Domain/MIT
         var d = new Date().getTime();//Timestamp
@@ -377,20 +378,25 @@ padding: 0px;
     var botname = sessionStorage.getItem('botname');
     // var botname = 'cronus';
     if(FQ == true){
+      var ask_orig = ask;
       ask = "second";
       FQ = false;
+    }
+    else{
+      var ask_orig = "";
     }
     if (!ask){
       ask = ""
       FQ = true;
+      SESSION_GLOBAL_ID = generateUUID();
     }
     
     if(DB_QUESTION == null){
-      comp_form_data = {"botname" : botname, "ask" : ask};
+      comp_form_data = {"botname" : botname, "ask" : ask, "session_id" : SESSION_GLOBAL_ID, "ask_orig" : ask_orig, "username" : sessionStorage.getItem('username')};
       console.log("IF " + DB_QUESTION);
     }
     else{
-      comp_form_data = {"botname" : botname, "ask" : DB_QUESTION};
+      comp_form_data = {"botname" : botname, "ask" : DB_QUESTION, "session_id" : SESSION_GLOBAL_ID, "ask_orig" : ask_orig, "username" : sessionStorage.getItem('username')};
       console.log("ELSE " + DB_QUESTION);
       DB_QUESTION = null;
     }
