@@ -23,6 +23,9 @@ function question_type(element){
     else if(ques_type == "dq"){
         simple_question_block(addon='database');
     }
+    else if(ques_type == "wq"){
+        simple_question_block(addon='welcome');
+    }
     
 }
 
@@ -37,6 +40,45 @@ function select_options(elem){
 }
 
 function simple_question_block(addon=null){
+    if(addon=='welcome'){
+        var card_id = generateUUID();
+        var card_div = document.createElement('div');
+        card_div.classList.add('card');
+        card_div.id = "card" + card_id;
+        var cancel_card = document.createElement('a');
+        cancel_card.onclick = function() { close_card(this); };
+        cancel_card.id = card_id;
+        var cancel_card_icon = document.createElement('i');
+        cancel_card_icon.classList.add("fa", "fa-window-close");
+        var container_div = document.createElement('div');
+        container_div.classList.add('container');
+        var q_type = document.createElement('label');
+        q_type.classList.add('question-title');
+        q_type.innerText = "Welcome Question";
+        var q_label = document.createElement('label');
+        q_label.innerText = "Question";
+        var br = document.createElement('br');
+        var q_input = document.createElement('input');
+        q_input.type = "text";
+        q_input.classList.add('big-input');
+        q_input.id = "wq-fq-01";
+        cancel_card.appendChild(cancel_card_icon);
+        container_div.appendChild(cancel_card);
+        container_div.appendChild(q_type);
+        container_div.appendChild(document.createElement('br'));
+        container_div.appendChild(document.createElement('hr'));
+        container_div.appendChild(q_label);
+        container_div.appendChild(document.createTextNode( '\u00A0\u00A0' ));
+        container_div.appendChild(br);
+        container_div.appendChild(q_input);
+        card_div.appendChild(container_div);
+        var main_container = document.getElementById(MAIN_CONTAINER);
+        main_container.appendChild(document.createTextNode( '\u00A0\u00A0' ));
+        main_container.appendChild(card_div);
+        ROW_CHECKER += 1;
+        var question_type_ref = "wq";
+        return 0;
+    }
     var card_id = generateUUID();                                                       // UUID CARD DIV
     var question_type_ref = "sq";
     CARD_IDS["card"+card_id] = {};
@@ -61,6 +103,7 @@ function simple_question_block(addon=null){
     else if(addon=='database'){
         q_type.innerText = "DataBase Question";    
     }
+    
     else{
         q_type.innerText = "Simple Question";    
     }
@@ -388,6 +431,8 @@ window.onload=function(){
         var responses = xhr.response;
         responses = JSON.parse(responses);
         console.log(responses);
+        simple_question_block(addon='welcome');
+        document.getElementById('wq-fq-01').value = responses.first_question;
         for (let index = 0; index < responses.question_type.length; index++) {
             if(responses.question_type[index] == "sq"){
                 simple_question_block()
@@ -538,7 +583,21 @@ function save_changes(){
         }
         formdata.push(formdict);
     }
-    comp_form_data = {"botname" : sessionStorage.getItem('botname'), "details" : formdata}
+    try{
+        var first_question = document.getElementById("wq-fq-01").value;
+        if(!first_question){
+            alert("Cannot Make Bot without Welcome Question");
+            throw new Error("Incorrect or Empty Information");
+        }
+        else{
+            comp_form_data = {"botname" : sessionStorage.getItem('botname'), "details" : formdata, "first_question" : first_question};
+        }
+    }
+    catch{
+        alert("Cannot Make Bot without Welcome Question");
+        throw new Error("Incorrect or Empty Information");
+    }
+    
     // formdata.push({"botname" : sessionStorage.getItem('botname')});
     
     console.log(formdata);

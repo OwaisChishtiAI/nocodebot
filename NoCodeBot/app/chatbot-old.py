@@ -9,26 +9,17 @@ class ChatBot:
         if bot_details:
             bot_details = bot_details.values()[0]
 
-        required = {"question" : None, "question_id" : None, "answers" : None, "answers_id" : None, "question_type" : None, "qmedia" : None, "amedia" : None}
-        self.required_keys = ['question','question_id','answers','answers_id','question_type','qmedia','amedia']
+        required = {"question" : None, "question_id" : None, "answers" : None, "answers_id" : None, "question_type" : None, "qmedia" : None, "amedia": None}
         # print(bot_details, bot_details['question'], type(bot_details['question']))
         for each in required.keys():
             required[each] = json.loads(bot_details[each].replace("'", '"'))
 
-        required['first_question'] = bot_details['first_question']
         self.required = required
 
     def get_bot_details(self):
         return self.required
 
     def first_question(self):
-        # return self.required['question'][0]
-        new_question = self.required['first_question']
-        
-        return {"new_question" : new_question, "media" : "", "new_question_type" : "first_question",\
-            "db_question": ""}
-
-    def second_question(self):
         # return self.required['question'][0]
         new_question = self.required['question'][0]
         # if self.required['question_type'][0] == "dq":
@@ -45,7 +36,7 @@ class ChatBot:
             li.append(options)
             db_question = ""
         new_question = li
-        return {"new_question" : new_question, "qmedia" : self.required['qmedia'][0], "amedia" : self.required['amedia'][0], "new_question_type" : self.required['question_type'][0],\
+        return {"new_question" : new_question, "media" : self.required['media'][0], "new_question_type" : self.required['question_type'][0],\
             "db_question": db_question}
 
     def talk(self, ask):
@@ -56,7 +47,6 @@ class ChatBot:
                 answer_id = self.required['answers'][i].index(ask)
                 print("[INFO] Answer Found")
                 i_index = i; ith_index = answer_id
-                break
             except:
                 pass
 
@@ -88,17 +78,10 @@ class ChatBot:
                     li.append(options)
                     db_question = ""
                 new_question = li
-                qmedia = self.required['qmedia'][question_id]
-                amedia = self.required['amedia'][question_id]
-                # self.required['answers'].pop(i_index)
-                for each in self.required_keys:
-                    self.required[each].pop(i_index)
-                return {"new_question" : new_question, "qmedia" : qmedia, "amedia" : amedia, "new_question_type" : question_type, "db_question" : db_question}
+                media = self.required['media'][question_id]
+                return {"new_question" : new_question, "media" : media, "new_question_type" : question_type, "db_question" : db_question}
 
             else:
                 return {"new_question" : "Records Not Found", "media" : "", "new_question_type" : ""}
         else:
             return {"new_question" : "Records Not Found", "media" : "", "new_question_type" : ""}
-
-    def check_existence(self):
-        return True
