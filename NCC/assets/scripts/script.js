@@ -545,6 +545,9 @@ function save_changes(){
         if(chat == true){
             window.location = "chatbox.html";
         }
+        else{
+            window.location = "botadd.html";
+        }
         }
     };
     xhr.send( JSON.stringify(comp_form_data) );
