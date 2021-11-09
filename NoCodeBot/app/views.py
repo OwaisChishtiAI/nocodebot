@@ -9,11 +9,12 @@ from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from django.conf import settings
 from django.core.files.storage import default_storage
-from app.models import BotNames, BotDetails, Login, ChatLogs
+from app.models import BotNames, BotDetails, Login, ChatLogs, DataBaseFiles
 from app.chatbot import ChatBot
 from datetime import datetime
 import json
 import os
+import ast
 
 # Create your views here.
 
@@ -135,7 +136,7 @@ def create_log(session_id, q, a, botname, username):
 
 def update_log(session_id, q, a, botname, username):
     logs = ChatLogs.objects.filter(session_id=session_id).values()[0]
-    questions, answers = json.loads(logs['questions'].replace("'", '"')), json.loads(logs['answers'].replace("'", '"'))
+    questions, answers = ast.literal_eval(logs['questions']), ast.literal_eval(logs['answers'])
     questions.append(q)
     answers.append(a)
     ChatLogs.objects.filter(session_id=session_id).update(questions=json.dumps(questions), answers=json.dumps(answers))
@@ -147,8 +148,8 @@ def get_chat_logs(botname):
         print("[INFO] Logs Found")
         logs_li = []
         for each in logs.values():
-            logs_li.append({'timestamp' : each['timestamp'], "questions" : json.loads(each['questions'].replace("'", '"')),\
-                "answers" : json.loads(each['answers'].replace("'", '"'))})
+            logs_li.append({'timestamp' : each['timestamp'], "questions" : ast.literal_eval(each['questions']),\
+                "answers" : ast.literal_eval(each['answers'])})
 
     else:
         print("[INFO] Logs Not Found")
@@ -168,20 +169,25 @@ def get_bot(botname):
 @api_view(['POST'])
 def get_db_file(request):
     file = request.FILES['file']
-    # name = json.loads(request.body)['db_name']
-    print("#########", file)
+    username = request.POST.get('username')
+    print("#########", username)
+    DataBaseFiles.objects.create(username=username, db_file_name=file.name)
     default_storage.save("db_files/"+file.name, file)
-    # name = json.loads(botname.body)['botname']
-    # bot_data = ChatBot(name).get_bot_details()
 
     response = json.dumps({"bot_data":""})
     return HttpResponse(response, content_type='application/json')
 
 @api_view(['POST'])
-def db_files(dummy):
-    files = os.listdir('db_files')
-    print("Files: ", files)
-    response = json.dumps({"files":files})
+def db_files(username):
+    username = json.loads(username.body)['username']
+    file_names = DataBaseFiles.objects.filter(username=username)
+    if file_names:
+        file_names = file_names.values()
+        file_names = [x['db_file_name'] for x in file_names]
+
+    # files = os.listdir('db_files')
+    print("Files: ", file_names)
+    response = json.dumps({"files":file_names})
     return HttpResponse(response, content_type='application/json')
 
 @api_view(['POST'])

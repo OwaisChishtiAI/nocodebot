@@ -158,7 +158,7 @@ function simple_question_block(addon=null){
             }
         }
         xhr.open('POST', ip_addr + 'db_files/', true);
-        xhr.send(null);
+        xhr.send(JSON.stringify({"username" : sessionStorage.getItem('username')}));
         
         div1.appendChild(button);
         div1.appendChild(div2);

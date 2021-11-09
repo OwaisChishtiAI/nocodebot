@@ -1,6 +1,7 @@
 from app.models import BotDetails
 import json
 import pandas as pd
+import ast
 
 class ChatBot:
     def __init__(self, botname):
@@ -13,7 +14,10 @@ class ChatBot:
         self.required_keys = ['question','question_id','answers','answers_id','question_type','qmedia','amedia']
         # print(bot_details, bot_details['question'], type(bot_details['question']))
         for each in required.keys():
-            required[each] = json.loads(bot_details[each].replace("'", '"'))
+            try:
+                required[each] = json.loads(bot_details[each].replace("'", '"'))
+            except:
+                required[each] = ast.literal_eval(bot_details[each])
 
         required['first_question'] = bot_details['first_question']
         self.required = required

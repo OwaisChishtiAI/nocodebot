@@ -3,6 +3,7 @@ function add_db_file(){
     // alert(db_file);
     const comp_form_data = new FormData();
     comp_form_data.append("file", db_file);
+    comp_form_data.append("username", sessionStorage.getItem('username'));
     // comp_form_data.append('db_name', db_name);
     // comp_form_data.append('db_file', db_file);
     xhr = new XMLHttpRequest();
@@ -88,5 +89,5 @@ window.onload=function(){
         }
     }
     xhr.open('POST', ip_addr + 'db_files/', true);
-    xhr.send(null);
+    xhr.send(JSON.stringify({"username" : sessionStorage.getItem('username')}));
   }

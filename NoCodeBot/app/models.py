@@ -40,3 +40,10 @@ class ChatLogs(models.Model):
     username = models.TextField()
     questions = models.TextField()
     answers = models.TextField()
+
+class DataBaseFiles(models.Model):
+    class Meta:
+        db_table = "database_files"
+
+    username = models.TextField()
+    db_file_name = models.TextField()
