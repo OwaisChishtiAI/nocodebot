@@ -570,6 +570,31 @@ padding: 0px;
       
       str += "        <\/div>";
     }
+    else if(msg.new_question_type == "yvm"){
+      str += "          <span >";
+      str += "            <iframe width=\"200px\" src=\"";
+      str+=               msg.qmedia.replace('watch?v=', 'embed/');
+      str+=               "\"><\/iframe>";
+      str += "          <\/span>";
+      str +="            <br>";
+      str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg "+type+"\">";
+      for(var l = 0 ; l < msg.answers.length ; l++){
+        if(msg.answers[l]){
+        str += "          <div class=\"cm-msg-text\">";
+        str += "          <span >";
+        str += "            <iframe width=\"200px\" src=\"";
+        str+=               msg.amedia[l].replace('watch?v=', 'embed/');
+        str+=               "\"><\/iframe>";
+        str += "          <\/span>";
+        str += "            <button onclick=\"option_choose(this)\">";
+          str+=               msg.answers[l];
+          str+=               "<\/button>";
+          str += "          <\/div>";
+        }
+      }
+      
+      str += "        <\/div>";
+    }
     
     if(msg.new_question_type == "dq"){
       str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg "+type+"\">";

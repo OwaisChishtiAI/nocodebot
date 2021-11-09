@@ -26,6 +26,9 @@ function question_type(element){
     else if(ques_type == "wq"){
         simple_question_block(addon='welcome');
     }
+    else if(ques_type == "yvm"){
+        simple_question_block(addon='youtube');
+    }
     
 }
 
@@ -103,7 +106,9 @@ function simple_question_block(addon=null){
     else if(addon=='database'){
         q_type.innerText = "DataBase Question";    
     }
-    
+    else if(addon=='youtube'){
+        q_type.innerText = "YouTube Video Question";    
+    }
     else{
         q_type.innerText = "Simple Question";    
     }
@@ -201,8 +206,26 @@ function simple_question_block(addon=null){
             image_output_answer.style.width = "200px";
             image_output_answer.setAttribute("controls","controls");
             question_type_ref = "vm";
+            var video_question = document.createElement('label');
+            video_question.id = "distant_id"+card_id;
             CARD_IDS["card"+card_id]["answer_div_inp_image"] = [];
             CARD_IDS["card"+card_id]["image_files"] = [];
+            CARD_IDS["card"+card_id]["answer_div_inp_image"].push("answer_div_inp_image"+card_id);    
+        }
+        else if(addon == "youtube"){
+            var image_input_answer = document.createElement('input');
+            image_input_answer.type = "text";
+            image_input_answer.id = "file_upload_answer" + card_id;
+            image_input_answer.classList.add('custom-file-upload');
+            image_input_answer.placeholder = "Link to Video";
+            var image_output_answer = document.createElement('iframe');
+            image_output_answer.id = "uploading_answer" + card_id;
+            image_output_answer.style.width = "200px";
+            // image_output_answer.setAttribute("controls","controls");
+            question_type_ref = "yvm";
+            CARD_IDS["card"+card_id]["answer_div_inp_image"] = [];
+            CARD_IDS["card"+card_id]["image_files2"] = [];
+            CARD_IDS["card"+card_id]["image_files2"].push("file_upload_answer"+card_id);
             CARD_IDS["card"+card_id]["answer_div_inp_image"].push("answer_div_inp_image"+card_id);    
         }
 
@@ -255,6 +278,25 @@ function simple_question_block(addon=null){
         video_output.style.width = "200px";
         video_output.setAttribute("controls","controls");
         question_type_ref = "vm";
+        var video_question = document.createElement('label');
+        video_question.id = "distant_id"+card_id;
+        container_div.appendChild(video_input);
+        container_div.appendChild(video_output);
+        container_div.appendChild(video_question);
+    }
+    else if (addon == "youtube"){
+        // var video_sec_uuid = generateUUID();                                                       // UUID VIDEO FILE
+        var video_input = document.createElement('input');
+        video_input.type = "text";
+        video_input.id = "file_upload" + card_id;
+        video_input.classList.add('custom-file-upload');
+        video_input.placeholder = "Link to Video";
+        var video_output = document.createElement('iframe');
+        video_output.id = "uploading" + card_id;
+        video_output.style.width = "200px";
+        // video_output.setAttribute("controls","controls");
+        question_type_ref = "yvm";
+        CARD_IDS["card"+card_id]["image_file2"] = "file_upload"+card_id;
         container_div.appendChild(video_input);
         container_div.appendChild(video_output);
     }
@@ -282,6 +324,11 @@ function simple_question_block(addon=null){
             answer_div.appendChild(image_output_answer);
         }
         else if(addon == "video"){
+            answer_div.appendChild(image_input_answer);
+            answer_div.appendChild(image_output_answer);
+            answer_div.appendChild(video_question);
+        }
+        else if(addon == "youtube"){
             answer_div.appendChild(image_input_answer);
             answer_div.appendChild(image_output_answer);
         }
@@ -381,19 +428,37 @@ function add_answer_field(element){
         }
         else if(document.getElementById('uploading_answer'+elem).nodeName == "VIDEO"){
             var image_input_answer = document.createElement('input');
-            image_input_answer.type = "file";
-            image_input_answer.id = "file_upload_answer" + new_id;
-            image_input_answer.classList.add('custom-file-upload');
-            var image_output_answer = document.createElement('video');
-            image_output_answer.id = "uploading_answer" + new_id;
-            image_output_answer.style.width = "200px";
-            image_output_answer.setAttribute("controls","controls");
-            question_type_ref = "vm";
-            CARD_IDS["card"+elem]["answer_div_inp_image"].push("answer_div_inp_image"+new_id);
-            answer_block.appendChild(image_input_answer);
-            answer_block.appendChild(image_output_answer);
-            document.getElementById("file_upload_answer"+new_id).addEventListener("change", fileuploadfnanswerimage, true);
+            if(answer_block.contains(document.getElementById('distant_id'+elem))){
+                image_input_answer.type = "file";
+                image_input_answer.id = "file_upload_answer" + new_id;
+                image_input_answer.classList.add('custom-file-upload');
+                var image_output_answer = document.createElement('video');
+                image_output_answer.id = "uploading_answer" + new_id;
+                image_output_answer.style.width = "200px";
+                image_output_answer.setAttribute("controls","controls");
+                question_type_ref = "vm";
+                CARD_IDS["card"+elem]["answer_div_inp_image"].push("answer_div_inp_image"+new_id);
+                answer_block.appendChild(image_input_answer);
+                answer_block.appendChild(image_output_answer);
+                document.getElementById("file_upload_answer"+new_id).addEventListener("change", fileuploadfnanswerimage, true);
+            }
         }
+        else if(document.getElementById('uploading_answer'+elem).nodeName == "IFRAME"){
+                var image_input_answer = document.createElement('input');
+                image_input_answer.type = "text";
+                image_input_answer.placeholder = "Link to Video";
+                image_input_answer.id = "file_upload_answer" + new_id;
+                CARD_IDS["card"+elem]["image_files2"].push("file_upload_answer"+new_id);
+                image_input_answer.classList.add('custom-file-upload');
+                var image_output_answer = document.createElement('iframe');
+                image_output_answer.id = "uploading_answer" + new_id;
+                image_output_answer.style.width = "200px";
+                // image_output_answer.setAttribute("controls","controls");
+                question_type_ref = "yvm";
+                CARD_IDS["card"+elem]["answer_div_inp_image"].push("answer_div_inp_image"+new_id);
+                answer_block.appendChild(image_input_answer);
+                answer_block.appendChild(image_output_answer);
+            }
     }
     // start_plumb();
 }
@@ -446,6 +511,9 @@ window.onload=function(){
             else if(responses.question_type[index] == "dq"){
                 simple_question_block(addon='database')
             }
+            else if(responses.question_type[index] == "yvm"){
+                simple_question_block(addon='youtube')
+            }
             var keys = [];
             for(var key of Object.keys(CARD_IDS)){
                 keys.push(key);
@@ -472,14 +540,27 @@ window.onload=function(){
                 document.getElementById(CARD_IDS["card"+this_block_id]["answer_div_id_inp"][j]).value = responses.answers_id[index][j];
                 
             }
-            if(CARD_IDS["card"+this_block_id]["question_type"] != "sq" && CARD_IDS["card"+this_block_id]["question_type"] != "dq"){
+            if(CARD_IDS["card"+this_block_id]["question_type"] != "sq" && CARD_IDS["card"+this_block_id]["question_type"] != "dq" && CARD_IDS["card"+this_block_id]["question_type"] != "yvm"){
                 document.getElementById("uploading"+this_block_id).src = responses.qmedia[index];
             }
-            if(CARD_IDS["card"+this_block_id]["question_type"] != "sq" && CARD_IDS["card"+this_block_id]["question_type"] != "dq"){
+            if(CARD_IDS["card"+this_block_id]["question_type"] != "sq" && CARD_IDS["card"+this_block_id]["question_type"] != "dq" && CARD_IDS["card"+this_block_id]["question_type"] != "yvm"){
                 for (let j = 0; j < CARD_IDS["card"+this_block_id]["answer_div_inp_image"].length; j++) {
                     let images_id = CARD_IDS["card"+this_block_id]["answer_div_inp_image"][j].split('answer_div_inp_image')[1];
                     console.log(images_id);
                     document.getElementById("uploading_answer"+images_id).src = responses.amedia[index][j];
+                }
+            }
+            if(CARD_IDS["card"+this_block_id]["question_type"] == "yvm"){
+                
+                document.getElementById("file_upload"+this_block_id).value = responses.qmedia[index];
+                document.getElementById("uploading"+this_block_id).src = responses.qmedia[index].replace('watch?v=', 'embed/');
+            }
+            if(CARD_IDS["card"+this_block_id]["question_type"] == "yvm"){
+                for (let j = 0; j < CARD_IDS["card"+this_block_id]["answer_div_inp_image"].length; j++) {
+                    let images_id = CARD_IDS["card"+this_block_id]["answer_div_inp_image"][j].split('answer_div_inp_image')[1];
+                    console.log(images_id);
+                    document.getElementById("file_upload_answer"+images_id).value = responses.amedia[index][j];
+                    document.getElementById("uploading_answer"+images_id).src = responses.amedia[index][j].replace('watch?v=', 'embed/');
                 }
             }
             
@@ -494,6 +575,11 @@ function fileuploadfnimage(evt){
     var image_id = evt.target.id.split("file_upload")[1];
     var img_sec = document.getElementById("uploading"+image_id);
     var files = evt.target.files;
+    var files_size = files[0].size;
+    if(files_size > 2000000){
+        alert("Choose File of size less than 2 MB.");
+        throw new Error("Choose File of size less than 2 MB.");
+    }
     console.log(img_sec, files);
     var fr = new FileReader();
     fr.onload = function () {
@@ -508,6 +594,11 @@ function fileuploadfnanswerimage(evt){
     var image_id = evt.target.id.split("file_upload_answer")[1];
     var img_sec = document.getElementById("uploading_answer"+image_id);
     var files = evt.target.files;
+    var files_size = files[0].size;
+    if(files_size > 2000000){
+        alert("Choose File of size less than 2 MB.");
+        throw new Error("Choose File of size less than 2 MB.");
+    }
     console.log(img_sec, files);
     var fr = new FileReader();
     fr.onload = function () {
@@ -523,6 +614,11 @@ function fileuploadfnvideo(evt){
     var video_id = evt.target.id.split("file_upload")[1];
     var video_sec = document.getElementById("uploading"+video_id);
     var files = evt.target.files;
+    var files_size = files[0].size;
+    if(files_size > 2000000){
+        alert("Choose File of size less than 2 MB.");
+        throw new Error("Choose File of size less than 2 MB.");
+    }
     console.log(video_sec, files);
     var fr = new FileReader();
     fr.onload = function () {
@@ -536,6 +632,11 @@ function fileuploadfnanswervideo(evt){
     var video_id = evt.target.id.split("file_upload_answer")[1];
     var video_sec = document.getElementById("uploading_answer"+video_id);
     var files = evt.target.files;
+    var files_size = files[0].size;
+    if(files_size > 2000000){
+        alert("Choose File of size less than 2 MB.");
+        throw new Error("Choose File of size less than 2 MB.");
+    }
     console.log(video_sec, files);
     var fr = new FileReader();
     fr.onload = function () {
@@ -548,6 +649,7 @@ function fileuploadfnanswervideo(evt){
 }
 
 function save_changes(){
+    document.getElementById('bot-save').innerText = "Saving...";
     if(CARD_IDS.length == undefined){
         CARD_IDS_CLONE = [CARD_IDS];
     }
@@ -570,6 +672,20 @@ function save_changes(){
                 formdict["qmedia"] = CARD_IDS_CLONE[0][key]["image_file"];
             }
         }
+        if(formdict["question_type"] == "yvm"){
+            if(CARD_IDS_CLONE[0][key]["image_file2"] != undefined){
+                formdict["qmedia"] = document.getElementById(CARD_IDS_CLONE[0][key]["image_file2"]).value;
+            }
+            for (let i = 0; i < CARD_IDS_CLONE[0][key]["answer_div_inp"].length; i++) {
+                // try{
+                if(document.getElementById(CARD_IDS_CLONE[0][key]["image_files2"][i]).value != undefined){
+                    formdict["amedia"].push(document.getElementById(CARD_IDS_CLONE[0][key]["image_files2"][i]).value);//
+                }
+                else{
+                    formdict["amedia"].push("");
+                }
+            }
+        }
         if(formdict["question_type"] == "pm" || formdict["question_type"] == "vm"){
             for (let i = 0; i < CARD_IDS_CLONE[0][key]["answer_div_inp"].length; i++) {
                 // try{
@@ -586,6 +702,7 @@ function save_changes(){
     try{
         var first_question = document.getElementById("wq-fq-01").value;
         if(!first_question){
+            document.getElementById('bot-save').innerText = "Save Changes";
             alert("Cannot Make Bot without Welcome Question");
             throw new Error("Incorrect or Empty Information");
         }
@@ -594,6 +711,7 @@ function save_changes(){
         }
     }
     catch{
+        document.getElementById('bot-save').innerText = "Save Changes";
         alert("Cannot Make Bot without Welcome Question");
         throw new Error("Incorrect or Empty Information");
     }
@@ -609,6 +727,7 @@ function save_changes(){
         reponses = JSON.parse(reponses);
         console.log('reponse ' + reponses.status);
         var chat = confirm("Changes Saves. Do you want to chat?");
+        document.getElementById('bot-save').innerText = "Save Changes";
         if(chat == true){
             window.location = "chatbox.html";
         }

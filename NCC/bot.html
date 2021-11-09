@@ -53,7 +53,8 @@
     <div class="container">
       <div class="row">
         <div class="col text-center">
-          <button class="btn btn-success" onclick="save_changes()">Save Changes</button>
+          <button class="btn btn-success" onclick="save_changes()" id="bot-save">Save Changes</button>
+          <button class="btn btn-primary" onclick="go_to_db()">Go To Database</button>
         </div>
       </div>
     </div>
@@ -107,6 +108,7 @@
           <a  onclick="question_type(this)" value="sq">Simple Question</a>
           <a  onclick="question_type(this)" value="pm">Picture MCQ</a>
           <a  onclick="question_type(this)" value="vm">Video MCQ</a>
+          <a  onclick="question_type(this)" value="yvm">YouTube Video MCQ</a>
           <a  onclick="question_type(this)" value="dq">Database Question</a>
         </div>
       </div>
